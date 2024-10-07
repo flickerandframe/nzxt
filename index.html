@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Playboi Carti Album Cover</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+    <title>Spotify Listening History</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="album-cover">
-    <img src="playboi-carti-album-cover.jpg" alt="Playboi Carti Album Cover">
-    <div class="progress-bar">
-      <div class="progress"></div>
+    <div class="spotify-container">
+        <div class="current-song">
+            <img src="" alt="Current song album cover">
+            <p>Current song: <span id="current-song-title"></span></p>
+            <p>Artist: <span id="current-song-artist"></span></p>
+        </div>
+        <div class="recent-tracks">
+            <h2>Recently Played</h2>
+            <ul id="recent-tracks-list"></ul>
+        </div>
     </div>
-    <div class="time-display"></div>
-  </div>
+    <div class="clock">
+        <p id="clock"></p>
+    </div>
 </body>
 </html>
