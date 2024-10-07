@@ -2,9 +2,6 @@
 const clientId = 'f472cf64810b419e82483c50e1dd4587';
 const redirectUri = 'https://flickerandframe.github.io/nzxt/';
 
-// Variable to store the currently playing track
-let currentTrack = null;
-
 // Function to fetch currently playing song and update the display
 function fetchCurrentlyPlaying(accessToken) {
     fetch('https://api.spotify.com/v1/me/player/currently-playing', {
@@ -18,25 +15,22 @@ function fetchCurrentlyPlaying(accessToken) {
         const trackName = document.getElementById('track-name');
         const artistName = document.getElementById('artist-name');
         const backgroundBlur = document.getElementById('background-blur');
-        const placeholderText = document.getElementById('placeholder');
-
-        // Check if music is playing
-        const isPlaying = data && data.is_playing;
-
-        if (isPlaying) {
+        
+        if (data && data.is_playing) {
             const albumImageUrl = data.item.album.images[0].url;
             const track = data.item.name;
             const artist = data.item.artists.map(artist => artist.name).join(', ');
 
-            // If the track has changed
-            if (currentTrack !== track) {
-                currentTrack = track;
+            // Crossfade logic
+            backgroundBlur.style.backgroundImage = `url(${albumImageUrl})`;
+            albumArt.src = albumImageUrl;
+            trackName.textContent = track;
+            artistName.textContent = artist;
 
-                // Crossfade effect
-                crossfadeElements(albumArt, trackName, artistName, backgroundBlur, albumImageUrl, track, artist);
-            }
+            // Fade in new content
+            crossfadeIn(albumArt, trackName, artistName, backgroundBlur);
         } else {
-            // Show placeholder and time if no track is playing
+            // Show placeholder if no track is playing
             showPlaceholder(true);
         }
     })
@@ -46,36 +40,21 @@ function fetchCurrentlyPlaying(accessToken) {
     });
 }
 
-// Function to perform crossfade
-function crossfadeElements(albumArt, trackName, artistName, backgroundBlur, albumImageUrl, track, artist) {
-    // Fade out existing elements
-    fadeOutAllElements([albumArt, trackName, artistName, backgroundBlur], () => {
-        // Update album art and text content after fade out
-        albumArt.src = albumImageUrl;
-        backgroundBlur.style.backgroundImage = `url(${albumImageUrl})`;
-        trackName.textContent = track;
-        artistName.textContent = artist;
+// Function to crossfade in new content
+function crossfadeIn(albumArt, trackName, artistName, backgroundBlur) {
+    // Reset opacity
+    albumArt.style.opacity = 0;
+    trackName.style.opacity = 0;
+    artistName.style.opacity = 0;
+    backgroundBlur.style.opacity = 0;
 
-        // Fade in the new elements simultaneously
-        fadeInAllElements([albumArt, trackName, artistName, backgroundBlur]);
-    });
-}
-
-// Function to fade out all elements
-function fadeOutAllElements(elements, callback) {
-    elements.forEach(element => {
-        element.style.transition = 'opacity 0.5s ease';
-        element.style.opacity = 0; // Fade out
-    });
-    setTimeout(callback, 500); // Execute the callback after fade-out is complete
-}
-
-// Function to fade in all elements
-function fadeInAllElements(elements) {
-    elements.forEach(element => {
-        element.style.transition = 'opacity 0.5s ease';
-        element.style.opacity = 1; // Fade in
-    });
+    // Wait a moment for the opacity to reset before showing new content
+    setTimeout(() => {
+        albumArt.style.opacity = 1;
+        trackName.style.opacity = 1;
+        artistName.style.opacity = 1;
+        backgroundBlur.style.opacity = 1;
+    }, 50); // Wait a tiny bit to create the crossfade effect
 }
 
 // Function to show or hide the placeholder
@@ -84,33 +63,31 @@ function showPlaceholder(show) {
     const albumArt = document.getElementById('album-art');
     const trackName = document.getElementById('track-name');
     const artistName = document.getElementById('artist-name');
-    const backgroundBlur = document.getElementById('background-blur');
 
     if (show) {
-        // Fade out the currently displayed elements
-        fadeOutAllElements([albumArt, trackName, artistName, backgroundBlur], () => {
-            placeholderText.classList.remove('hidden');
-            placeholderText.classList.add('visible'); // Show placeholder
-        });
+        placeholderText.style.display = 'flex';
+        albumArt.style.opacity = 0; // Hide album art
+        trackName.style.opacity = 0; // Hide track name
+        artistName.style.opacity = 0; // Hide artist name
     } else {
-        // Fade out the placeholder and show actual track information
-        fadeOutAllElements([placeholderText], () => {
-            placeholderText.classList.add('hidden'); // Hide placeholder
-            fadeInAllElements([albumArt, trackName, artistName, backgroundBlur]);
-        });
+        placeholderText.style.display = 'none';
+        albumArt.style.opacity = 1; // Show album art
+        trackName.style.opacity = 1; // Show track name
+        artistName.style.opacity = 1; // Show artist name
     }
 }
 
-// Function to get the current time in EST
-function getCurrentTimeEST() {
-    const options = { timeZone: 'America/New_York', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
-    return new Intl.DateTimeFormat('en-US', options).format(new Date());
-}
-
-// Function to update the time every second
+// Update the clock every second
 function updateTime() {
-    const currentTime = document.getElementById('current-time');
-    currentTime.textContent = getCurrentTimeEST();
+    const now = new Date();
+    const options = {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: true,
+        timeZone: 'America/New_York',
+    };
+    document.getElementById('clock').textContent = now.toLocaleString('en-US', options);
 }
 
 // Check if the user has already logged in
@@ -120,7 +97,8 @@ if (window.location.hash) {
     // Poll every 5 seconds to check for song updates
     setInterval(() => fetchCurrentlyPlaying(accessToken), 5000);
 } else {
-    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=user-read-playback-state`;
+    // Redirect to Spotify login for authorization
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=user-read-currently-playing`;
     window.location.href = authUrl;
 }
 
