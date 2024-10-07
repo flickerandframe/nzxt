@@ -1,6 +1,6 @@
 // Spotify credentials
-const clientId = 'f472cf64810b419e82483c50e1dd4587';
-const redirectUri = 'https://flickerandframe.github.io/nzxt/';
+const clientId = 'f472cf64810b419e82483c50e1dd4587'; // Replace with your actual client ID
+const redirectUri = 'https://flickerandframe.github.io/nzxt/'; // Replace with your actual redirect URI
 
 // Function to fetch currently playing song and update the display
 function fetchCurrentlyPlaying(accessToken) {
@@ -15,6 +15,7 @@ function fetchCurrentlyPlaying(accessToken) {
         const trackName = document.getElementById('track-name');
         const artistName = document.getElementById('artist-name');
         const backgroundBlur = document.getElementById('background-blur');
+        const clock = document.getElementById('clock');
 
         if (data && data.is_playing) {
             const albumImageUrl = data.item.album.images[0].url;
@@ -27,28 +28,26 @@ function fetchCurrentlyPlaying(accessToken) {
             trackName.textContent = track;
             artistName.textContent = artist;
 
-            // Show the album art and track info
-            albumArt.style.display = 'block';
-            trackName.style.display = 'block';
-            artistName.style.display = 'block';
+            // Hide clock
+            clock.style.display = 'none';
         } else {
-            // Hide album art and track info if no track is playing
-            albumArt.style.display = 'none';
-            trackName.style.display = 'none';
-            artistName.style.display = 'none';
+            // Show clock when no track is playing
+            clock.style.display = 'flex';
+            clock.textContent = getCurrentTime();
         }
     })
     .catch(error => {
         console.error('Error fetching currently playing track:', error);
+        document.getElementById('clock').style.display = 'flex';
+        document.getElementById('clock').textContent = getCurrentTime();
     });
 }
 
-// Update the clock every second
-function updateClock() {
-    const clock = document.getElementById('clock');
+// Function to get current time in EST
+function getCurrentTime() {
     const now = new Date();
-    const options = { hour: 'numeric', minute: 'numeric', hour12: true, timeZone: 'America/New_York' };
-    clock.textContent = now.toLocaleString('en-US', options);
+    const options = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'America/New_York' };
+    return now.toLocaleTimeString('en-US', options);
 }
 
 // Check if the user has already logged in
@@ -64,4 +63,8 @@ if (window.location.hash) {
 }
 
 // Update clock every second
-setInterval(updateClock, 1000);
+setInterval(() => {
+    if (document.getElementById('clock').style.display === 'flex') {
+        document.getElementById('clock').textContent = getCurrentTime();
+    }
+}, 1000);
