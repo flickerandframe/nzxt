@@ -1,51 +1,111 @@
+// Spotify credentials
 const clientId = 'f472cf64810b419e82483c50e1dd4587';
 const redirectUri = 'https://flickerandframe.github.io/nzxt/';
-const scopes = 'user-read-currently-playing user-read-playback-state';
-let accessToken;
 
-// Function to authenticate with Spotify and get an access token
-function authenticate() {
-    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes}&response_type=token`;
-    window.location.href = authUrl;
+// Variable to store the currently playing track
+let currentTrack = null;
+
+// Function to fetch currently playing song and update the display
+function fetchCurrentlyPlaying(accessToken) {
+    fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+        headers: {
+            'Authorization': 'Bearer ' + accessToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const albumArt = document.getElementById('album-art');
+        const trackName = document.getElementById('track-name');
+        const artistName = document.getElementById('artist-name');
+        const backgroundBlur = document.getElementById('background-blur');
+        const placeholderText = document.getElementById('placeholder');
+
+        // Check if music is playing
+        const isPlaying = data && data.is_playing;
+
+        if (isPlaying) {
+            const albumImageUrl = data.item.album.images[0].url;
+            const track = data.item.name;
+            const artist = data.item.artists.map(artist => artist.name).join(', ');
+
+            // If the track has changed
+            if (currentTrack !== track) {
+                currentTrack = track;
+
+                // Start crossfade effect
+                crossfadeElements(albumArt, trackName, artistName, backgroundBlur, albumImageUrl, track, artist);
+            }
+        } else {
+            // Show placeholder if no track is playing
+            showPlaceholder(true);
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching currently playing track:', error);
+        showPlaceholder(true);
+    });
 }
 
-// Function to get the currently playing track
-async function fetchCurrentTrack() {
-    if (!accessToken) {
-        authenticate();
-        return;
-    }
+// Function to perform crossfade
+function crossfadeElements(albumArt, trackName, artistName, backgroundBlur, albumImageUrl, track, artist) {
+    // Fade out existing elements
+    fadeOutAllElements([albumArt, trackName, artistName, backgroundBlur], () => {
+        // Update album art and text content after fade out
+        albumArt.src = albumImageUrl;
+        backgroundBlur.style.backgroundImage = `url(${albumImageUrl})`;
+        trackName.textContent = track;
+        artistName.textContent = artist;
 
-    const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-        headers: {
-            'Authorization': `Bearer ${accessToken}`
-        }
+        // Fade in the new elements
+        fadeInAllElements([albumArt, trackName, artistName, backgroundBlur]);
     });
+}
 
-    if (response.ok) {
-        const data = await response.json();
-        console.log(data); // Log the data to see what's being returned
-        if (data && data.is_playing) {
-            const songTitle = data.item.name;
-            const artistName = data.item.artists.map(artist => artist.name).join(', ');
-            const albumCoverUrl = data.item.album.images[0].url;
+// Function to fade out all elements
+function fadeOutAllElements(elements, callback) {
+    elements.forEach(element => {
+        element.style.opacity = 0; // Fade out
+    });
+    setTimeout(callback, 500); // Execute the callback after fade-out is complete
+}
 
-            document.getElementById('song-title').innerText = songTitle;
-            document.getElementById('artist-name').innerText = artistName;
-            document.getElementById('album-cover').style.backgroundImage = `url('${albumCoverUrl}')`;
-            document.getElementById('no-song').classList.add('hidden');
-            
-            // Update progress bar
-            const progress = data.progress_ms; // Get current progress in milliseconds
-            const duration = data.item.duration_ms; // Get total duration in milliseconds
-            const progressBar = document.getElementById('progress-bar');
-            const progressPercentage = (progress / duration) * 100; // Calculate percentage
-            progressBar.style.width = `${progressPercentage}%`;
-        } else {
-            // Handle case when no song is playing
-            document.getElementById('no-song').classList.remove('hidden');
-        }
+// Function to fade in all elements
+function fadeInAllElements(elements) {
+    elements.forEach(element => {
+        element.style.opacity = 1; // Fade in
+    });
+}
+
+// Function to show or hide the placeholder
+function showPlaceholder(show) {
+    const placeholderText = document.getElementById('placeholder');
+    const albumArt = document.getElementById('album-art');
+    const trackName = document.getElementById('track-name');
+    const artistName = document.getElementById('artist-name');
+
+    if (show) {
+        // Fade out the currently displayed elements
+        fadeOutAllElements([albumArt, trackName, artistName], () => {
+            placeholderText.classList.remove('hidden');
+            fadeInAllElements([placeholderText]);
+        });
     } else {
-        console.error('Failed to fetch current track:', response.status);
+        // Fade out the placeholder and show actual track information
+        fadeOutAllElements([placeholderText], () => {
+            placeholderText.classList.add('hidden');
+            fadeInAllElements([albumArt, trackName, artistName]);
+        });
     }
+}
+
+// Check if the user has already logged in
+if (window.location.hash) {
+    const accessToken = window.location.hash.split('&')[0].split('=')[1];
+    fetchCurrentlyPlaying(accessToken);
+    // Poll every 5 seconds to check for song updates
+    setInterval(() => fetchCurrentlyPlaying(accessToken), 5000);
+} else {
+    // Redirect to Spotify login for authorization
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=user-read-currently-playing`;
+    window.location.href = authUrl;
 }
