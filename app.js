@@ -15,79 +15,40 @@ function fetchCurrentlyPlaying(accessToken) {
         const trackName = document.getElementById('track-name');
         const artistName = document.getElementById('artist-name');
         const backgroundBlur = document.getElementById('background-blur');
-        
+
         if (data && data.is_playing) {
             const albumImageUrl = data.item.album.images[0].url;
             const track = data.item.name;
             const artist = data.item.artists.map(artist => artist.name).join(', ');
 
-            // Crossfade logic
-            backgroundBlur.style.backgroundImage = `url(${albumImageUrl})`;
+            // Update album art and blurred background
             albumArt.src = albumImageUrl;
+            backgroundBlur.style.backgroundImage = `url(${albumImageUrl})`;
             trackName.textContent = track;
             artistName.textContent = artist;
 
-            // Fade in new content
-            crossfadeIn(albumArt, trackName, artistName, backgroundBlur);
+            // Show the album art and track info
+            albumArt.style.display = 'block';
+            trackName.style.display = 'block';
+            artistName.style.display = 'block';
         } else {
-            // Show placeholder if no track is playing
-            showPlaceholder(true);
+            // Hide album art and track info if no track is playing
+            albumArt.style.display = 'none';
+            trackName.style.display = 'none';
+            artistName.style.display = 'none';
         }
     })
     .catch(error => {
         console.error('Error fetching currently playing track:', error);
-        showPlaceholder(true);
     });
 }
 
-// Function to crossfade in new content
-function crossfadeIn(albumArt, trackName, artistName, backgroundBlur) {
-    // Reset opacity
-    albumArt.style.opacity = 0;
-    trackName.style.opacity = 0;
-    artistName.style.opacity = 0;
-    backgroundBlur.style.opacity = 0;
-
-    // Wait a moment for the opacity to reset before showing new content
-    setTimeout(() => {
-        albumArt.style.opacity = 1;
-        trackName.style.opacity = 1;
-        artistName.style.opacity = 1;
-        backgroundBlur.style.opacity = 1;
-    }, 50); // Wait a tiny bit to create the crossfade effect
-}
-
-// Function to show or hide the placeholder
-function showPlaceholder(show) {
-    const placeholderText = document.getElementById('placeholder');
-    const albumArt = document.getElementById('album-art');
-    const trackName = document.getElementById('track-name');
-    const artistName = document.getElementById('artist-name');
-
-    if (show) {
-        placeholderText.style.display = 'flex';
-        albumArt.style.opacity = 0; // Hide album art
-        trackName.style.opacity = 0; // Hide track name
-        artistName.style.opacity = 0; // Hide artist name
-    } else {
-        placeholderText.style.display = 'none';
-        albumArt.style.opacity = 1; // Show album art
-        trackName.style.opacity = 1; // Show track name
-        artistName.style.opacity = 1; // Show artist name
-    }
-}
-
 // Update the clock every second
-function updateTime() {
+function updateClock() {
+    const clock = document.getElementById('clock');
     const now = new Date();
-    const options = {
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: true,
-        timeZone: 'America/New_York',
-    };
-    document.getElementById('clock').textContent = now.toLocaleString('en-US', options);
+    const options = { hour: 'numeric', minute: 'numeric', hour12: true, timeZone: 'America/New_York' };
+    clock.textContent = now.toLocaleString('en-US', options);
 }
 
 // Check if the user has already logged in
@@ -102,5 +63,5 @@ if (window.location.hash) {
     window.location.href = authUrl;
 }
 
-// Update the clock every second
-setInterval(updateTime, 1000);
+// Update clock every second
+setInterval(updateClock, 1000);
