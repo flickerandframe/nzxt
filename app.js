@@ -15,6 +15,7 @@ function fetchCurrentlyPlaying(accessToken) {
         const trackName = document.getElementById('track-name');
         const artistName = document.getElementById('artist-name');
         const backgroundBlur = document.getElementById('background-blur');
+        const placeholderText = document.getElementById('placeholder');
         
         if (data && data.is_playing) {
             const albumImageUrl = data.item.album.images[0].url;
@@ -27,7 +28,7 @@ function fetchCurrentlyPlaying(accessToken) {
             trackName.textContent = track;
             artistName.textContent = artist;
 
-            // Hide placeholder
+            // Hide placeholder with fade effect
             showPlaceholder(false);
         } else {
             // Show placeholder if no track is playing
@@ -43,20 +44,22 @@ function fetchCurrentlyPlaying(accessToken) {
 // Function to show or hide the placeholder
 function showPlaceholder(show) {
     const placeholderText = document.getElementById('placeholder');
-    const albumArt = document.getElementById('album-art');
-    const trackName = document.getElementById('track-name');
-    const artistName = document.getElementById('artist-name');
-    
+
     if (show) {
-        placeholderText.style.display = 'flex';
-        albumArt.style.display = 'none'; // Hide album art when showing placeholder
-        trackName.style.display = 'none'; // Hide track name when showing placeholder
-        artistName.style.display = 'none'; // Hide artist name when showing placeholder
+        placeholderText.classList.remove('hidden');
+        placeholderText.classList.add('visible');
+
+        setTimeout(() => {
+            placeholderText.style.display = 'flex'; // Ensure it displays during the fade
+        }, 0);
     } else {
-        placeholderText.style.display = 'none';
-        albumArt.style.display = 'block'; // Show album art when playing
-        trackName.style.display = 'block'; // Show track name when playing
-        artistName.style.display = 'block'; // Show artist name when playing
+        placeholderText.classList.remove('visible');
+
+        // After fade out, hide completely
+        setTimeout(() => {
+            placeholderText.classList.add('hidden');
+            placeholderText.style.display = 'none';
+        }, 500); // Match with the CSS transition duration
     }
 }
 
