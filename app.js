@@ -2,6 +2,9 @@
 const clientId = 'f472cf64810b419e82483c50e1dd4587';
 const redirectUri = 'https://flickerandframe.github.io/nzxt/';
 
+// Variables to track current state
+let currentTrack = null;
+
 // Function to fetch currently playing song and update the display
 function fetchCurrentlyPlaying(accessToken) {
     fetch('https://api.spotify.com/v1/me/player/currently-playing', {
@@ -22,16 +25,26 @@ function fetchCurrentlyPlaying(accessToken) {
             const track = data.item.name;
             const artist = data.item.artists.map(artist => artist.name).join(', ');
 
-            // Update album art and blurred background
-            albumArt.src = albumImageUrl;
-            backgroundBlur.style.backgroundImage = `url(${albumImageUrl})`;
-            trackName.textContent = track;
-            artistName.textContent = artist;
+            // Update album art only if the track has changed
+            if (currentTrack !== track) {
+                currentTrack = track;
 
-            // Hide placeholder with fade effect
+                // Fade out the current album art
+                albumArt.style.opacity = 0;
+                setTimeout(() => {
+                    albumArt.src = albumImageUrl; // Change the image after fading out
+                    backgroundBlur.style.backgroundImage = `url(${albumImageUrl})`;
+
+                    // Fade in the new album art
+                    albumArt.style.opacity = 1;
+                }, 500); // Wait for fade-out to complete
+            }
+
+            // Update track and artist info with fade effects
+            fadeInText(trackName, track);
+            fadeInText(artistName, artist);
             showPlaceholder(false);
         } else {
-            // Show placeholder if no track is playing
             showPlaceholder(true);
         }
     })
@@ -39,6 +52,15 @@ function fetchCurrentlyPlaying(accessToken) {
         console.error('Error fetching currently playing track:', error);
         showPlaceholder(true);
     });
+}
+
+// Function to fade in text
+function fadeInText(element, text) {
+    element.style.opacity = 0; // Start hidden
+    setTimeout(() => {
+        element.textContent = text; // Update text content
+        element.style.opacity = 1; // Fade in text
+    }, 500); // Wait for the fade out to complete
 }
 
 // Function to show or hide the placeholder
@@ -55,6 +77,9 @@ function showPlaceholder(show) {
         // Fade out track info
         trackName.style.opacity = 0;
         artistName.style.opacity = 0;
+
+        // Fade out album art
+        albumArt.style.opacity = 0;
 
         setTimeout(() => {
             placeholderText.style.display = 'flex'; // Ensure it displays during the fade
