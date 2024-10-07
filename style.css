@@ -56,7 +56,7 @@ body {
 /* Track Information */
 .track-info {
     color: white;
-    padding: 25px; /* Consistent padding */
+    padding: 10px; /* Consistent padding */
 }
 
 #track-name {
