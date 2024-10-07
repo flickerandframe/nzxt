@@ -107,3 +107,8 @@ body {
 .placeholder.hidden {
     opacity: 0; /* Fade out */
 }
+
+#current-time {
+    font-size: 20px;
+    margin-top: 10px;
+}
