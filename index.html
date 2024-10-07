@@ -3,31 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spotify Display</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Spotify Status Display</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="spotify-widget">
+  <div class="circular-display">
     <div class="background-blur"></div>
     <div class="content">
-      <div class="album-cover-container">
-        <img id="album-cover" src="placeholder.jpg" alt="Album Cover">
-      </div>
+      <div class="progress-circle"></div>
+      <img id="album-cover" src="" alt="Album Cover" class="album-cover">
       <div class="song-info">
-        <h1 id="song-title">No music playing</h1>
-        <h3 id="artist-name"></h3>
+        <h2 id="song-title">Song Title</h2>
+        <h3 id="artist-name">Artist Name</h3>
       </div>
-      <div class="progress-bar"></div>
-    </div>
-    <div class="fallback-content">
-      <div id="time-display"></div>
-      <div id="last-played">
-        <img id="last-album-cover" src="placeholder.jpg" alt="Last Album Cover">
-        <p id="last-song-title">Last played: Song</p>
-        <p id="last-artist-name">Artist</p>
+      <div class="fallback-info" style="display: none;">
+        <h2 id="current-time"></h2>
+        <div class="last-played">
+          <h3 id="last-title">Last Played Title</h3>
+          <p id="last-artist">Artist Name</p>
+        </div>
       </div>
     </div>
   </div>
-  <script src="app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
