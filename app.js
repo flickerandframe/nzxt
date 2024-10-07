@@ -29,21 +29,21 @@ function fetchCurrentlyPlaying(accessToken) {
             if (currentTrack !== track) {
                 currentTrack = track;
 
-                // Fade out the current album art
-                albumArt.style.opacity = 0;
-                setTimeout(() => {
-                    albumArt.src = albumImageUrl; // Change the image after fading out
+                // Fade out all elements simultaneously
+                fadeOutAllElements([albumArt, trackName, artistName, backgroundBlur], () => {
+                    // Change the album art and background after fading out
+                    albumArt.src = albumImageUrl;
                     backgroundBlur.style.backgroundImage = `url(${albumImageUrl})`;
 
-                    // Fade in the new album art
-                    albumArt.style.opacity = 1;
-                }, 500); // Wait for fade-out to complete
+                    // Fade in all elements after changing the album art
+                    fadeInAllElements([albumArt, trackName, artistName, backgroundBlur], track, artist);
+                });
+            } else {
+                // If the same track is playing, just fade in text if it's hidden
+                fadeInText(trackName, track);
+                fadeInText(artistName, artist);
+                showPlaceholder(false);
             }
-
-            // Update track and artist info with fade effects
-            fadeInText(trackName, track);
-            fadeInText(artistName, artist);
-            showPlaceholder(false);
         } else {
             showPlaceholder(true);
         }
@@ -54,13 +54,30 @@ function fetchCurrentlyPlaying(accessToken) {
     });
 }
 
-// Function to fade in text
-function fadeInText(element, text) {
-    element.style.opacity = 0; // Start hidden
+// Function to fade out all elements
+function fadeOutAllElements(elements, callback) {
+    elements.forEach(element => {
+        element.style.opacity = 0; // Fade out
+    });
     setTimeout(() => {
-        element.textContent = text; // Update text content
-        element.style.opacity = 1; // Fade in text
-    }, 500); // Wait for the fade out to complete
+        callback(); // Execute the callback after fade-out is complete
+    }, 500); // Match with the CSS transition duration
+}
+
+// Function to fade in all elements
+function fadeInAllElements(elements, track, artist) {
+    elements.forEach((element, index) => {
+        setTimeout(() => {
+            element.style.opacity = 1; // Fade in
+        }, index * 50); // Stagger the fade in a bit
+    });
+    
+    // Update text after fading in
+    document.getElementById('track-name').textContent = track;
+    document.getElementById('artist-name').textContent = artist;
+
+    // Show blurred background
+    document.getElementById('background-blur').classList.add('visible');
 }
 
 // Function to show or hide the placeholder
@@ -74,25 +91,14 @@ function showPlaceholder(show) {
         placeholderText.classList.remove('hidden');
         placeholderText.classList.add('visible');
 
-        // Fade out track info
-        trackName.style.opacity = 0;
-        artistName.style.opacity = 0;
-
-        // Fade out album art
-        albumArt.style.opacity = 0;
-
-        setTimeout(() => {
-            placeholderText.style.display = 'flex'; // Ensure it displays during the fade
-        }, 0);
+        // Fade out track info and album art
+        fadeOutAllElements([albumArt, trackName, artistName]);
     } else {
         placeholderText.classList.remove('visible');
-
-        // Fade in track info
-        setTimeout(() => {
-            trackName.style.opacity = 1;
-            artistName.style.opacity = 1;
-        }, 500); // Match with the CSS transition duration for placeholder
-
+        
+        // Fade in track info and album art
+        fadeInAllElements([albumArt, trackName, artistName], trackName.textContent, artistName.textContent);
+        
         // After fade out, hide completely
         setTimeout(() => {
             placeholderText.classList.add('hidden');
