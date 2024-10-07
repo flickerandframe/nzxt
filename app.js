@@ -74,4 +74,4 @@ function updateClock() {
 }
 
 fetchSpotifyData();
-setInterval(fetchSpotifyData, 30000); // Refresh every 30 seconds
+setInterval(fetchSpotifyData, 500); // Refresh every 30 seconds
