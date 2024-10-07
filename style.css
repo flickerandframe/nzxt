@@ -1,107 +1,69 @@
-/* Reset */
-* {
+body, html {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background-color: #181818;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    font-family: 'Poppins', sans-serif;
+    background-color: black;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
 }
 
-/* Kraken Display (circular) */
-.kraken-display {
-    width: 500px;
-    height: 500px;
+#app {
     position: relative;
-    border-radius: 50%;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100%;
 }
 
-/* Blurred Background */
-.background-blur {
+#album-cover {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 50%;
+    background-image: url(''); /* Placeholder for album cover */
     background-size: cover;
-    background-position: center;
     filter: blur(20px);
-    z-index: 1;
-    transition: opacity 0.5s ease;
 }
 
-/* Content Layer (Album Art and Text) */
-.content {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+#now-playing {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
 }
 
-/* Album Art */
-#album-art {
-    width: 240px;
-    height: 240px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    transition: opacity 0.5s ease;
-}
-
-/* Track Information */
-.track-info {
+#song-title {
+    font-size: 3em;
     color: white;
-    padding: 10px;
-}
-
-#track-name {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 5px;
-    transition: opacity 0.5s ease;
 }
 
 #artist-name {
-    font-size: 20px;
-    font-weight: 400;
-    color: #b3b3b3;
-    transition: opacity 0.5s ease;
+    font-size: 1.5em;
+    color: grey;
 }
 
-/* Placeholder */
-.placeholder {
-    color: white;
-    font-size: 24px;
-    font-weight: 700;
-    text-align: center;
+#no-song {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: opacity 0.5s ease;
+    text-align: center;
 }
 
-.hidden {
-    opacity: 0;
-    pointer-events: none; /* Prevent interactions */
+#clock {
+    font-size: 2em;
 }
 
-.visible {
-    opacity: 1;
-    pointer-events: auto; /* Allow interactions */
+#progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 5px;
+    width: 100%;
+    background-color: white;
+    transition: width 0.1s ease-in-out;
 }
