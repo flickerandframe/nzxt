@@ -28,36 +28,40 @@ function fetchCurrentlyPlaying(accessToken) {
             const track = data.item.name;
             const artist = data.item.artists.map(artist => artist.name).join(', ');
 
-            // Update album art only if the track has changed
+            // If the track has changed
             if (currentTrack !== track) {
                 currentTrack = track;
 
-                // Fade out all elements simultaneously
-                fadeOutAllElements([albumArt, trackName, artistName, backgroundBlur], () => {
-                    // Change the album art and background after fading out
-                    albumArt.src = albumImageUrl;
-                    backgroundBlur.style.backgroundImage = `url(${albumImageUrl})`;
-
-                    // Update text after changing album art
-                    trackName.textContent = track;
-                    artistName.textContent = artist;
-
-                    // Fade in all elements after changing the album art
-                    fadeInAllElements([albumArt, trackName, artistName, backgroundBlur]);
-                });
+                // Start the crossfade effect
+                crossfadeElements(albumArt, trackName, artistName, backgroundBlur, albumImageUrl, track, artist);
             } else {
-                // If the same track is playing, just fade in text if it's hidden
+                // If the same track is playing, just ensure text is visible
                 fadeInText(trackName);
                 fadeInText(artistName);
-                showPlaceholder(false);
             }
         } else {
+            // Handle the "No music playing" state
             showPlaceholder(true);
         }
     })
     .catch(error => {
         console.error('Error fetching currently playing track:', error);
         showPlaceholder(true);
+    });
+}
+
+// Function to perform crossfade
+function crossfadeElements(albumArt, trackName, artistName, backgroundBlur, albumImageUrl, track, artist) {
+    // Fade out existing elements
+    fadeOutAllElements([albumArt, trackName, artistName, backgroundBlur], () => {
+        // Update album art and text content after fade out
+        albumArt.src = albumImageUrl;
+        backgroundBlur.style.backgroundImage = `url(${albumImageUrl})`;
+        trackName.textContent = track;
+        artistName.textContent = artist;
+
+        // Fade in the new elements
+        fadeInAllElements([albumArt, trackName, artistName, backgroundBlur]);
     });
 }
 
@@ -86,16 +90,18 @@ function showPlaceholder(show) {
     const artistName = document.getElementById('artist-name');
 
     if (show) {
-        placeholderText.classList.remove('hidden');
-        fadeOutAllElements([albumArt, trackName, artistName, backgroundBlur], () => {
-            placeholderText.classList.add('visible');
+        // Fade out the currently displayed elements
+        fadeOutAllElements([albumArt, trackName, artistName], () => {
+            // Show placeholder after fade out
+            placeholderText.classList.remove('hidden');
             fadeInAllElements([placeholderText]);
         });
     } else {
+        // Fade out the placeholder and show actual track information
         placeholderText.classList.remove('visible');
         fadeOutAllElements([placeholderText], () => {
             placeholderText.classList.add('hidden');
-            fadeInAllElements([albumArt, trackName, artistName, backgroundBlur]);
+            fadeInAllElements([albumArt, trackName, artistName]);
         });
     }
 }
