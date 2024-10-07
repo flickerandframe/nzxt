@@ -1,46 +1,76 @@
+/* Font Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     background-color: #181818;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
+/* Kraken Display */
 .kraken-display {
-    width: 300px;
-    height: 300px;
+    width: 500px;
+    height: 500px;
+    position: relative;
     border-radius: 50%;
-    background: radial-gradient(circle, #2c2c2c, #000);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.7);
+}
+
+/* Blurred Background */
+.background-blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(20px);
+    z-index: 1;
+}
+
+/* Content on Top */
+.content {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
-    position: relative;
-}
-
-#album-art {
-    width: 120px;
-    height: 120px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
-.track-info {
     text-align: center;
 }
 
-#track-name {
+#album-art {
+    width: 180px;
+    height: 180px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.track-info {
     color: white;
-    font-size: 18px;
-    margin: 0;
+}
+
+#track-name {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
 #artist-name {
+    font-size: 18px;
+    font-weight: 400;
     color: #b3b3b3;
-    font-size: 14px;
-    margin: 0;
 }
