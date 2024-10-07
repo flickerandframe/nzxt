@@ -19,6 +19,7 @@ function fetchCurrentlyPlaying(accessToken) {
         const artistName = document.getElementById('artist-name');
         const backgroundBlur = document.getElementById('background-blur');
         const placeholderText = document.getElementById('placeholder');
+        const currentTime = document.getElementById('current-time');
 
         // Check if music is playing
         const isPlaying = data && data.is_playing;
@@ -38,6 +39,7 @@ function fetchCurrentlyPlaying(accessToken) {
         } else {
             // Show placeholder and time if no track is playing
             showPlaceholder(true);
+            currentTime.textContent = getCurrentTimeEST();
         }
     })
     .catch(error => {
@@ -56,7 +58,7 @@ function crossfadeElements(albumArt, trackName, artistName, backgroundBlur, albu
         trackName.textContent = track;
         artistName.textContent = artist;
 
-        // Fade in the new elements
+        // Fade in the new elements simultaneously
         fadeInAllElements([albumArt, trackName, artistName, backgroundBlur]);
     });
 }
@@ -64,6 +66,7 @@ function crossfadeElements(albumArt, trackName, artistName, backgroundBlur, albu
 // Function to fade out all elements
 function fadeOutAllElements(elements, callback) {
     elements.forEach(element => {
+        element.style.transition = 'opacity 0.5s ease';
         element.style.opacity = 0; // Fade out
     });
     setTimeout(callback, 500); // Execute the callback after fade-out is complete
@@ -72,6 +75,7 @@ function fadeOutAllElements(elements, callback) {
 // Function to fade in all elements
 function fadeInAllElements(elements) {
     elements.forEach(element => {
+        element.style.transition = 'opacity 0.5s ease';
         element.style.opacity = 1; // Fade in
     });
 }
@@ -82,20 +86,19 @@ function showPlaceholder(show) {
     const albumArt = document.getElementById('album-art');
     const trackName = document.getElementById('track-name');
     const artistName = document.getElementById('artist-name');
-    const currentTime = document.getElementById('current-time');
+    const backgroundBlur = document.getElementById('background-blur');
 
     if (show) {
         // Fade out the currently displayed elements
         fadeOutAllElements([albumArt, trackName, artistName, backgroundBlur], () => {
             placeholderText.classList.remove('hidden');
-            currentTime.textContent = getCurrentTimeEST();
-            fadeInAllElements([placeholderText, currentTime]);
+            fadeInAllElements([placeholderText]);
         });
     } else {
         // Fade out the placeholder and show actual track information
-        fadeOutAllElements([placeholderText, currentTime], () => {
+        fadeOutAllElements([placeholderText], () => {
             placeholderText.classList.add('hidden');
-            fadeInAllElements([albumArt, trackName, artistName]);
+            fadeInAllElements([albumArt, trackName, artistName, backgroundBlur]);
         });
     }
 }
@@ -114,6 +117,4 @@ if (window.location.hash) {
     setInterval(() => fetchCurrentlyPlaying(accessToken), 5000);
 } else {
     // Redirect to Spotify login for authorization
-    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=user-read-currently-playing`;
-    window.location.href = authUrl;
-}
+    const authUrl = `https://accounts.spotify.com/authorize?client_id
