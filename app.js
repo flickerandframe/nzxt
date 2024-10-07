@@ -1,77 +1,45 @@
-const clientId = 'f472cf64810b419e82483c50e1dd4587';
-const clientSecret = '2bf86aa82a18444db6abd5fd5819ca93';
-const refreshToken = 'AQCqUMwvhZvLGN2Lw7LrSqFuuArGHYHfl9kFwtiHKL9Dr49yFRUnzv7ExS5jGM0bQhJxhRsJczsxNqLKTaFVV8H2y4fLNgcLA-fP9cpiDt54kauruyC4mrKKJEuSJu206M0';
+const accessToken = 'BQAdoZUV_-v8l18PmfFmfHnC8RHQ6q41ZWChLDCObnywsDKzNm6vSE9KO6-_PpqMYSr8Cm_CGHg6m1C9-RE7GAhMBAL7Ed6ungPXXA0WJxlDyftxPE3qICMhx3xUHsrvJXIk3BpTCMjZI-k0xK93Zxn4hE7vvJ2JRzirMXgmp8hRtAkRi9fVT2WK_fiMeY9A4XhKqyEKAq8Yc_MeCzhuLQ'; // Replace with your Spotify access token
 
-const authUrl = 'https://accounts.spotify.com/api/token';
-const playerUrl = 'https://api.spotify.com/v1/me/player/currently-playing';
-
-const albumCover = document.getElementById('album-cover');
-const songTitle = document.getElementById('song-title');
-const artistName = document.getElementById('artist-name');
-const progressBar = document.querySelector('.progress-bar');
-
-// Fetch Spotify data
-async function fetchSpotifyData() {
-  try {
-    const token = await getAccessToken();
-    const response = await fetch(playerUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (response.status === 204 || response.status === 200) {
-      const data = await response.json();
-      updateUI(data);
-    } else {
-      showFallbackUI();
+// Function to fetch the currently playing song
+async function getCurrentlyPlaying() {
+  const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
     }
-  } catch (error) {
-    console.error('Error fetching Spotify data:', error);
-  }
-}
-
-// Update the UI with the song data
-function updateUI(data) {
-  const album = data.item.album;
-  const song = data.item.name;
-  const artist = data.item.artists.map((a) => a.name).join(', ');
-
-  albumCover.src = album.images[0].url;
-  songTitle.textContent = song;
-  artistName.textContent = artist;
-
-  // Update progress bar and animations
-  const duration = data.item.duration_ms;
-  const progress = data.progress_ms;
-  animateProgressBar(progress, duration);
-
-  // Crossfade handling (use opacity transitions)
-}
-
-// Animate the circular progress bar
-function animateProgressBar(progress, duration) {
-  const progressRatio = (progress / duration) * 100;
-  progressBar.style.strokeDasharray = `${progressRatio} 100`;
-}
-
-// Show fallback UI when no music is playing
-function showFallbackUI() {
-  const fallbackContent = document.querySelector('.fallback-content');
-  fallbackContent.style.display = 'block';
-  updateClock();
-}
-
-// Update the time display in fallback
-function updateClock() {
-  const timeDisplay = document.getElementById('time-display');
-  const now = new Date();
-  timeDisplay.textContent = now.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
   });
+  
+  if (response.status === 204 || response.status > 400) {
+    showFallback();
+    return;
+  }
+  
+  const data = await response.json();
+  updateDisplay(data);
 }
 
-fetchSpotifyData();
-setInterval(fetchSpotifyData, 500); // Refresh every 30 seconds
+// Function to update the UI with song info
+function updateDisplay(data) {
+  const albumCover = document.getElementById('album-cover');
+  const songTitle = document.getElementById('song-title');
+  const artistName = document.getElementById('artist-name');
+  const backgroundBlur = document.querySelector('.background-blur');
+  
+  albumCover.src = data.item.album.images[0].url;
+  songTitle.textContent = data.item.name;
+  artistName.textContent = data.item.artists.map(artist => artist.name).join(', ');
+  backgroundBlur.style.backgroundImage = `url(${data.item.album.images[0].url})`;
+  
+  // Additional: Start the progress circle and crossfade here
+}
+
+function showFallback() {
+  document.querySelector('.fallback-info').style.display = 'block';
+  document.querySelector('.content').style.display = 'none';
+  // Update fallback info with the last played song
+}
+
+function updateProgress() {
+  // Calculate and animate the progress circle
+}
+
+setInterval(getCurrentlyPlaying, 5000); // Refresh every 5 seconds
