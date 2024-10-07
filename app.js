@@ -1,6 +1,6 @@
 // Spotify credentials
-const clientId = 'YOUR_CLIENT_ID';
-const redirectUri = 'YOUR_REDIRECT_URI';
+const clientId = 'f472cf64810b419e82483c50e1dd4587';
+const redirectUri = 'https://flickerandframe.github.io/nzxt/';
 
 // Check if the user has already logged in
 if (window.location.hash) {
