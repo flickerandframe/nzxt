@@ -3,24 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
     <title>Spotify Now Playing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app">
-        <div id="album-cover" class="blurred"></div>
-        <div id="circle">
-            <div id="now-playing">
-                <h1 id="song-title">Song Title</h1>
-                <h2 id="artist-name">Artist Name</h2>
+    <div class="kraken-display">
+        <div class="background-blur" id="background-blur"></div>
+        <div class="content">
+            <img id="album-art" src="" alt="Album Art">
+            <div class="track-info">
+                <p id="track-name">Track Name</p>
+                <p id="artist-name">Artist Name</p>
             </div>
-            <div id="progress-bar"></div>
-        </div>
-        <div id="no-song" class="hidden">
-            <h1>No music playing</h1>
-            <div id="clock"></div>
         </div>
     </div>
+    
+    <div id="placeholder" class="placeholder hidden">
+        <p>No music playing.</p>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>
