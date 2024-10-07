@@ -50,30 +50,31 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 0 20px; /* Add horizontal padding */
 }
 
-#album-art {
-    width: 300px;
-    height: 300px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
+/* Track Information */
 .track-info {
     color: white;
+    padding: 10px; /* Consistent padding */
 }
 
 #track-name {
-    font-size: 35px;
-    font-weight: 700;  /* Bold */
-    margin-bottom: 10px;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 5px; /* Consistent margin */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for long text */
 }
 
 #artist-name {
     font-size: 20px;
     font-weight: 400;
     color: #b3b3b3;
-}
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for long text */
 
 .placeholder {
     display: none; /* Hidden by default */
