@@ -24,12 +24,11 @@ async function fetchCurrentTrack() {
 
     if (response.ok) {
         const data = await response.json();
+        console.log(data); // Log the data to see what's being returned
         if (data && data.is_playing) {
             const songTitle = data.item.name;
             const artistName = data.item.artists.map(artist => artist.name).join(', ');
             const albumCoverUrl = data.item.album.images[0].url;
-            const progress = data.progress_ms; // Get current progress in milliseconds
-            const duration = data.item.duration_ms; // Get total duration in milliseconds
 
             document.getElementById('song-title').innerText = songTitle;
             document.getElementById('artist-name').innerText = artistName;
@@ -37,6 +36,8 @@ async function fetchCurrentTrack() {
             document.getElementById('no-song').classList.add('hidden');
             
             // Update progress bar
+            const progress = data.progress_ms; // Get current progress in milliseconds
+            const duration = data.item.duration_ms; // Get total duration in milliseconds
             const progressBar = document.getElementById('progress-bar');
             const progressPercentage = (progress / duration) * 100; // Calculate percentage
             progressBar.style.width = `${progressPercentage}%`;
@@ -48,4 +49,3 @@ async function fetchCurrentTrack() {
         console.error('Failed to fetch current track:', response.status);
     }
 }
-
