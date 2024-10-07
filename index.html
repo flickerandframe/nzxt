@@ -1,23 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Spotify Listening History</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify Display</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="spotify-container">
-        <div class="current-song">
-            <img src="" alt="Current song album cover">
-            <p>Current song: <span id="current-song-title"></span></p>
-            <p>Artist: <span id="current-song-artist"></span></p>
-        </div>
-        <div class="recent-tracks">
-            <h2>Recently Played</h2>
-            <ul id="recent-tracks-list"></ul>
-        </div>
+  <div class="spotify-widget">
+    <div class="background-blur"></div>
+    <div class="content">
+      <div class="album-cover-container">
+        <img id="album-cover" src="placeholder.jpg" alt="Album Cover">
+      </div>
+      <div class="song-info">
+        <h1 id="song-title">No music playing</h1>
+        <h3 id="artist-name"></h3>
+      </div>
+      <div class="progress-bar"></div>
     </div>
-    <div class="clock">
-        <p id="clock"></p>
+    <div class="fallback-content">
+      <div id="time-display"></div>
+      <div id="last-played">
+        <img id="last-album-cover" src="placeholder.jpg" alt="Last Album Cover">
+        <p id="last-song-title">Last played: Song</p>
+        <p id="last-artist-name">Artist</p>
+      </div>
     </div>
+  </div>
+  <script src="app.js"></script>
 </body>
 </html>
