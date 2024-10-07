@@ -74,3 +74,16 @@ body {
     font-weight: 400;
     color: #b3b3b3;
 }
+
+.placeholder {
+    display: none; /* Hidden by default */
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    z-index: 2;
+    position: absolute; /* Position it in the center */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
