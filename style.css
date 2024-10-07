@@ -39,7 +39,8 @@ body {
     background-position: center;
     filter: blur(20px);
     z-index: 1;
-    transition: opacity 0.5s ease;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.5s; /* Smooth fade */
 }
 
 /* Content Layer (Album Art and Text) */
@@ -58,38 +59,37 @@ body {
     width: 240px;  
     height: 240px; 
     border-radius: 15px;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    opacity: 0; /* Start hidden */
-    transition: opacity 0.5s ease;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.5s; /* Smooth fade */
 }
 
 /* Track Information */
 .track-info {
     color: white;
-    padding: 10px; 
+    padding: 10px;
 }
 
 #track-name {
     font-size: 26px;
     font-weight: 700;
-    margin-bottom: 5px; 
-    opacity: 0; /* Start hidden */
-    transition: opacity 0.5s ease;
+    margin-bottom: 5px;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.5s; /* Smooth fade */
 }
 
 #artist-name {
     font-size: 20px;
     font-weight: 400;
     color: #b3b3b3;
-    opacity: 0; /* Start hidden */
-    transition: opacity 0.5s ease;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.5s; /* Smooth fade */
 }
 
 /* Placeholder */
 .placeholder {
-    display: flex; 
-    flex-direction: column;
+    display: none; 
     color: white;
     font-size: 24px;
     font-weight: 700;
@@ -99,20 +99,14 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    opacity: 0; 
-    transition: opacity 0.5s ease;
 }
 
-.placeholder.visible {
-    opacity: 1; 
-}
-
-.placeholder.hidden {
-    opacity: 0; 
-    display: none;
-}
-
-#current-time {
-    font-size: 20px;
-    margin-top: 10px;
+/* Clock */
+.clock {
+    position: absolute;
+    top: 20px; /* Position at the top */
+    right: 20px; /* Position on the right */
+    color: white;
+    font-size: 36px; /* Larger font size */
+    z-index: 3; /* Ensure it's above other elements */
 }
