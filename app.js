@@ -118,4 +118,11 @@ if (window.location.hash) {
     const accessToken = window.location.hash.split('&')[0].split('=')[1];
     fetchCurrentlyPlaying(accessToken);
     // Poll every 5 seconds to check for song updates
-    setInterval(() => fetchCurrently
+    setInterval(() => fetchCurrentlyPlaying(accessToken), 5000);
+} else {
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=user-read-playback-state`;
+    window.location.href = authUrl;
+}
+
+// Update the clock every second
+setInterval(updateTime, 1000);
