@@ -33,7 +33,7 @@ function fetchCurrentlyPlaying(accessToken) {
             if (currentTrack !== track) {
                 currentTrack = track;
 
-                // Start crossfade effect
+                // Crossfade effect
                 crossfadeElements(albumArt, trackName, artistName, backgroundBlur, albumImageUrl, track, artist);
             }
         } else {
@@ -92,12 +92,12 @@ function showPlaceholder(show) {
         // Fade out the currently displayed elements
         fadeOutAllElements([albumArt, trackName, artistName, backgroundBlur], () => {
             placeholderText.classList.remove('hidden');
-            fadeInAllElements([placeholderText]);
+            placeholderText.classList.add('visible'); // Show placeholder
         });
     } else {
         // Fade out the placeholder and show actual track information
         fadeOutAllElements([placeholderText], () => {
-            placeholderText.classList.add('hidden');
+            placeholderText.classList.add('hidden'); // Hide placeholder
             fadeInAllElements([albumArt, trackName, artistName, backgroundBlur]);
         });
     }
