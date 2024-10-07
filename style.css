@@ -1,79 +1,109 @@
-body, html {
+/* Reset */
+* {
     margin: 0;
     padding: 0;
-    width: 100%;
-    height: 100%;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #181818;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black;
-    color: white;
-    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
 }
 
-#app {
+/* Kraken Display (circular) */
+.kraken-display {
+    width: 500px;
+    height: 500px;
     position: relative;
-    width: 360px; /* Match Kraken Elite 360 dimensions */
-    height: 360px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.7);
 }
 
-#album-cover {
+/* Blurred Background */
+.background-blur {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url(''); /* Placeholder for album cover */
+    border-radius: 50%;
     background-size: cover;
+    background-position: center;
     filter: blur(20px);
-    border-radius: 50%; /* Make it circular */
+    z-index: 1;
+    opacity: 1;
+    transition: opacity 0.5s ease;
 }
 
-#circle {
+/* Content Layer (Album Art and Text) */
+.content {
     position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%; /* Make it circular */
-    overflow: hidden;
+    z-index: 2;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-#now-playing {
-    position: absolute;
     text-align: center;
-    z-index: 1;
 }
 
-#song-title {
-    font-size: 1.5em; /* Adjust for Kraken size */
+/* Album Art */
+#album-art {
+    width: 240px;  
+    height: 240px; 
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+/* Track Information */
+.track-info {
     color: white;
+    padding: 10px; /* Consistent padding */
+}
+
+#track-name {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 5px; /* Consistent margin */
 }
 
 #artist-name {
-    font-size: 1em; /* Adjust for Kraken size */
-    color: grey;
+    font-size: 20px;
+    font-weight: 400;
+    color: #b3b3b3;
 }
 
-#no-song {
-    position: absolute;
-    top: 40%;
+/* Placeholder */
+.placeholder {
+    display: none; /* Hidden by default */
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    z-index: 2;
+    position: absolute; /* Position it in the center */
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    text-align: center;
+    opacity: 0; /* Start with opacity 0 */
+    transition: opacity 0.5s ease;
 }
 
-#clock {
-    font-size: 2em;
+.placeholder.visible {
+    display: flex; /* Show placeholder */
+    opacity: 1; /* Fade in */
 }
 
-#progress-bar {
-    position: absolute;
-    bottom: 0; /* Position at the bottom */
-    left: 0;
-    height: 5px; /* Height of the progress bar */
-    width: 100%;
-    background-color: white;
-    transition: width 0.1s ease-in-out;
+.placeholder.hidden {
+    opacity: 0; /* Fade out */
 }
