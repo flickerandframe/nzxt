@@ -19,7 +19,6 @@ function fetchCurrentlyPlaying(accessToken) {
         const artistName = document.getElementById('artist-name');
         const backgroundBlur = document.getElementById('background-blur');
         const placeholderText = document.getElementById('placeholder');
-        const currentTime = document.getElementById('current-time');
 
         // Check if music is playing
         const isPlaying = data && data.is_playing;
@@ -39,7 +38,6 @@ function fetchCurrentlyPlaying(accessToken) {
         } else {
             // Show placeholder and time if no track is playing
             showPlaceholder(true);
-            currentTime.textContent = getCurrentTimeEST();
         }
     })
     .catch(error => {
@@ -109,14 +107,15 @@ function getCurrentTimeEST() {
     return new Intl.DateTimeFormat('en-US', options).format(new Date());
 }
 
+// Function to update the time every second
+function updateTime() {
+    const currentTime = document.getElementById('current-time');
+    currentTime.textContent = getCurrentTimeEST();
+}
+
 // Check if the user has already logged in
 if (window.location.hash) {
     const accessToken = window.location.hash.split('&')[0].split('=')[1];
     fetchCurrentlyPlaying(accessToken);
     // Poll every 5 seconds to check for song updates
-    setInterval(() => fetchCurrentlyPlaying(accessToken), 5000);
-} else {
-    // Redirect to Spotify login for authorization
-    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user-read-currently-playing&response_type=token`;
-    window.location.href = authUrl;
-}
+    setInterval(() => fetchCurrently
