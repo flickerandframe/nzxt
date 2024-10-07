@@ -117,4 +117,6 @@ if (window.location.hash) {
     setInterval(() => fetchCurrentlyPlaying(accessToken), 5000);
 } else {
     // Redirect to Spotify login for authorization
-    const authUrl = `https://accounts.spotify.com/authorize?client_id
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user-read-currently-playing&response_type=token`;
+    window.location.href = authUrl;
+}
