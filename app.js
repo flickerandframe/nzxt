@@ -28,11 +28,18 @@ async function fetchCurrentTrack() {
             const songTitle = data.item.name;
             const artistName = data.item.artists.map(artist => artist.name).join(', ');
             const albumCoverUrl = data.item.album.images[0].url;
+            const progress = data.progress_ms; // Get current progress in milliseconds
+            const duration = data.item.duration_ms; // Get total duration in milliseconds
 
             document.getElementById('song-title').innerText = songTitle;
             document.getElementById('artist-name').innerText = artistName;
             document.getElementById('album-cover').style.backgroundImage = `url('${albumCoverUrl}')`;
             document.getElementById('no-song').classList.add('hidden');
+            
+            // Update progress bar
+            const progressBar = document.getElementById('progress-bar');
+            const progressPercentage = (progress / duration) * 100; // Calculate percentage
+            progressBar.style.width = `${progressPercentage}%`;
         } else {
             // Handle case when no song is playing
             document.getElementById('no-song').classList.remove('hidden');
@@ -42,17 +49,3 @@ async function fetchCurrentTrack() {
     }
 }
 
-// Extract access token from URL
-function getAccessTokenFromUrl() {
-    const hash = window.location.hash;
-    if (hash) {
-        const params = new URLSearchParams(hash.replace('#', '?'));
-        accessToken = params.get('access_token');
-        history.replaceState(null, null, redirectUri); // Clean URL
-        fetchCurrentTrack();
-    }
-}
-
-// Call this function on page load
-getAccessTokenFromUrl();
-setInterval(fetchCurrentTrack, 5000); // Update track info every 5 seconds
