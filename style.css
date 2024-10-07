@@ -16,8 +16,8 @@ body {
 
 /* Kraken Display (circular) */
 .kraken-display {
-    width: 500px;
-    height: 500px;
+    width: 550px;  /* Increased size */
+    height: 550px; /* Increased size */
     position: relative;
     border-radius: 50%;
     overflow: hidden;
@@ -91,4 +91,15 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    transition: opacity 0.5s ease; /* Added transition for fade effect */
+}
+
+.placeholder.visible {
+    display: flex;
+    opacity: 1; /* Fully visible */
+}
+
+.placeholder.hidden {
+    opacity: 0; /* Hidden */
+    pointer-events: none; /* Prevent interaction when hidden */
 }
