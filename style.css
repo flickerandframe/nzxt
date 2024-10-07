@@ -39,7 +39,6 @@ body {
     background-position: center;
     filter: blur(20px);
     z-index: 1;
-    opacity: 0; /* Initially hidden */
 }
 
 /* Content Layer (Album Art and Text) */
@@ -55,8 +54,8 @@ body {
 
 /* Album Art */
 #album-art {
-    width: 240px;
-    height: 240px;
+    width: 240px;  /* Increased size */
+    height: 240px; /* Increased size */
     border-radius: 15px;
     margin-bottom: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
@@ -65,12 +64,13 @@ body {
 /* Track Information */
 .track-info {
     color: white;
-    text-align: center;
+    padding: 10px; /* Consistent padding */
 }
 
 #track-name {
     font-size: 26px;
     font-weight: 700;
+    margin-bottom: 5px; /* Consistent margin */
 }
 
 #artist-name {
@@ -81,11 +81,15 @@ body {
 
 /* Clock */
 .clock {
-    position: absolute;
-    top: 50%; /* Center vertically */
-    left: 50%; /* Center horizontally */
-    transform: translate(-50%, -50%); /* Offset by half its size */
-    font-size: 48px; /* Large font size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: white;
-    z-index: 3;
+    font-size: 48px; /* Larger font size for the clock */
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3; /* Ensure clock is above everything else */
 }
