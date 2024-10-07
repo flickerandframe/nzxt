@@ -40,7 +40,6 @@ body {
     filter: blur(20px);
     z-index: 1;
     opacity: 0; /* Initially hidden */
-    transition: opacity 0.5s; /* Smooth fade */
 }
 
 /* Content Layer (Album Art and Text) */
@@ -56,60 +55,37 @@ body {
 
 /* Album Art */
 #album-art {
-    width: 240px;  
-    height: 240px; 
+    width: 240px;
+    height: 240px;
     border-radius: 15px;
     margin-bottom: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.5s; /* Smooth fade */
 }
 
 /* Track Information */
 .track-info {
     color: white;
-    padding: 10px;
+    text-align: center;
 }
 
 #track-name {
     font-size: 26px;
     font-weight: 700;
-    margin-bottom: 5px;
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.5s; /* Smooth fade */
 }
 
 #artist-name {
     font-size: 20px;
     font-weight: 400;
     color: #b3b3b3;
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.5s; /* Smooth fade */
-}
-
-/* Placeholder */
-.placeholder {
-    display: none; 
-    color: white;
-    font-size: 24px;
-    font-weight: 700;
-    text-align: center;
-    z-index: 2;
-    position: absolute; 
-    top: 50%; /* Center vertically */
-    left: 50%; /* Center horizontally */
-    transform: translate(-50%, -50%);
 }
 
 /* Clock */
 .clock {
     position: absolute;
-    top: 20px; /* Position at the top */
-    left: 20px; /* Position on the left */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Offset by half its size */
+    font-size: 48px; /* Large font size */
     color: white;
-    font-size: 36px; /* Larger font size */
-    z-index: 3; /* Ensure it's above other elements */
-    background: rgba(0, 0, 0, 0.5); /* Optional: semi-transparent background */
-    padding: 10px; /* Padding for better appearance */
-    border-radius: 10px; /* Rounded corners */
+    z-index: 3;
 }
