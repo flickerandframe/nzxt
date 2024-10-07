@@ -1,70 +1,58 @@
-// Spotify credentials
 const clientId = 'f472cf64810b419e82483c50e1dd4587'; // Replace with your actual client ID
-const redirectUri = 'https://flickerandframe.github.io/nzxt/'; // Replace with your actual redirect URI
+const clientSecret = 'https://flickerandframe.github.io/nzxt/'; // Replace with your actual client secret
+const redirectUri = 'http://localhost:3000/callback'; // Replace with your actual redirect URI
 
-// Function to fetch currently playing song and update the display
-function fetchCurrentlyPlaying(accessToken) {
-    fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-        headers: {
-            'Authorization': 'Bearer ' + accessToken
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        const albumArt = document.getElementById('album-art');
-        const trackName = document.getElementById('track-name');
-        const artistName = document.getElementById('artist-name');
-        const backgroundBlur = document.getElementById('background-blur');
-        const clock = document.getElementById('clock');
+// Function to obtain an access token using the Authorization Code Flow
+async function getAccessToken() {
+  const response = await fetch('https://accounts.spotify.com/authorize', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `grant_type=authorization_code&code=${code}&redirect_uri=${redirectUri}&client_id=${clientId}&client_secret=${clientSecret}`,
+  });
 
-        if (data && data.is_playing) {
-            const albumImageUrl = data.item.album.images[0].url;
-            const track = data.item.name;
-            const artist = data.item.artists.map(artist => artist.name).join(', ');
-
-            // Update album art and blurred background
-            albumArt.src = albumImageUrl;
-            backgroundBlur.style.backgroundImage = `url(${albumImageUrl})`;
-            trackName.textContent = track;
-            artistName.textContent = artist;
-
-            // Hide clock
-            clock.style.display = 'none';
-        } else {
-            // Show clock when no track is playing
-            clock.style.display = 'flex';
-            clock.textContent = getCurrentTime();
-        }
-    })
-    .catch(error => {
-        console.error('Error fetching currently playing track:', error);
-        document.getElementById('clock').style.display = 'flex';
-        document.getElementById('clock').textContent = getCurrentTime();
-    });
+  const data = await response.json();
+  return data.access_token;
 }
 
-// Function to get current time in EST
-function getCurrentTime() {
-    const now = new Date();
-    const options = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'America/New_York' };
-    return now.toLocaleTimeString('en-US', options);
+// Function to retrieve a user's playlists using the Spotify API
+async function getUserPlaylists(accessToken) {
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const url = 'https://api.spotify.com/v1/me/playlists';
+
+  const response = await fetch(url, {
+    headers,
+  });
+
+  const data = await response.json();
+  return data.items;
 }
 
-// Check if the user has already logged in
-if (window.location.hash) {
-    const accessToken = window.location.hash.split('&')[0].split('=')[1];
-    fetchCurrentlyPlaying(accessToken);
-    // Poll every 5 seconds to check for song updates
-    setInterval(() => fetchCurrentlyPlaying(accessToken), 5000);
-} else {
-    // Redirect to Spotify login for authorization
-    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=user-read-currently-playing`;
-    window.location.href = authUrl;
+// Function to update the progress bar and time display
+function updateProgress(progress, time) {
+  progressBar.style.width = `${progress}%`;
+  timeDisplay.textContent = time;
 }
 
-// Update clock every second
-setInterval(() => {
-    if (document.getElementById('clock').style.display === 'flex') {
-        document.getElementById('clock').textContent = getCurrentTime();
-    }
-}, 1000);
+// Example usage:
+async function main() {
+  // Obtain an access token using the Authorization Code Flow
+  const accessToken = await getAccessToken();
+
+  // Retrieve the user's playlists
+  const playlists = await getUserPlaylists(accessToken);
+
+  // Update the UI with playlist information (e.g., display playlist names and thumbnails)
+  playlists.forEach((playlist) => {
+    // ...
+  });
+
+  // Replace this with the logic to fetch the current song information from Spotify
+  // and update the progress bar and time display accordingly
+  updateProgress(50, '02:30'); // Example: 50% progress, 2 minutes 30 seconds
+}
+
+main();
