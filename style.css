@@ -56,11 +56,11 @@ body {
 /* Track Information */
 .track-info {
     color: white;
-    padding: 10px; /* Consistent padding */
+    padding: 25px; /* Consistent padding */
 }
 
 #track-name {
-    font-size: 26px;
+    font-size: 32px;
     font-weight: 700;
     margin-bottom: 5px; /* Consistent margin */
     white-space: nowrap; /* Prevent text wrapping */
