@@ -3,8 +3,11 @@ const albumCover = document.getElementById('album-cover');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
 const backgroundBlur = document.getElementById('background-blur');
-const fallbackInfo = document.getElementById('fallback-info');
-const progressCircle = document.getElementById('progress-circle');
+const albumCoverWrapper = document.getElementById('album-cover-wrapper');
+const songInfo = document.getElementById('song-info');
+const progressCircle = document.querySelector('svg circle');
+
+let currentTrackId = '';
 
 async function getCurrentlyPlaying() {
   try {
@@ -17,43 +20,47 @@ async function getCurrentlyPlaying() {
     }
 
     const data = await response.json();
-    updateDisplay(data);
+    if (data.item.id !== currentTrackId) {
+      currentTrackId = data.item.id;
+      crossfade(data);
+    }
+    updateProgress(data.progress_ms, data.item.duration_ms);
   } catch (error) {
     console.error('Error fetching currently playing song:', error);
   }
 }
 
-function updateDisplay(data) {
-  const { item } = data;
-  if (item) {
-    const albumImage = item.album.images[0].url;
-    const title = item.name;
-    const artist = item.artists.map(artist => artist.name).join(', ');
-    const duration = item.duration_ms;
-    const progress = data.progress_ms;
-
-    albumCover.src = albumImage;
-    songTitle.textContent = title;
-    artistName.textContent = artist;
-    backgroundBlur.style.backgroundImage = `url(${albumImage})`;
-
-    // Remove hidden class for fade-in effect
-    albumCover.classList.remove('hidden');
+function crossfade(data) {
+  // Fade out current display
+  albumCoverWrapper.classList.add('hidden');
+  songInfo.classList.add('hidden');
+  backgroundBlur.classList.add('hidden');
+  
+  setTimeout(() => {
+    // Update the display
+    albumCover.src = data.item.album.images[0].url;
+    songTitle.textContent = data.item.name;
+    artistName.textContent = data.item.artists.map(artist => artist.name).join(', ');
+    backgroundBlur.style.backgroundImage = `url(${data.item.album.images[0].url})`;
+    
+    // Fade in new display
+    albumCoverWrapper.classList.remove('hidden');
+    songInfo.classList.remove('hidden');
     backgroundBlur.classList.remove('hidden');
-
-    updateProgress(progress, duration);
-  }
+  }, 500); // Wait for fade-out transition
 }
 
-function updateProgress(current, duration) {
-  const progressPercent = (current / duration) * 100;
-  progressCircle.style.backgroundImage = `conic-gradient(#1DB954 ${progressPercent}%, transparent ${progressPercent}%)`;
+function updateProgress(progress, duration) {
+  const progressPercent = (progress / duration) * 100;
+  const circumference = 2 * Math.PI * 180;
+  progressCircle.style.strokeDasharray = `${(circumference * progressPercent) / 100} ${circumference}`;
 }
 
 function showFallback() {
-  fallbackInfo.style.display = 'block';
-  albumCover.classList.add('hidden');  // Fade out album cover
-  backgroundBlur.classList.add('hidden');  // Fade out background blur
+  document.getElementById('fallback-info').classList.remove('hidden');
+  albumCoverWrapper.classList.add('hidden');
+  songInfo.classList.add('hidden');
+  backgroundBlur.classList.add('hidden');
 }
 
-setInterval(getCurrentlyPlaying, 5000);  // Refresh every 5 seconds
+setInterval(getCurrentlyPlaying, 100); // Refresh every 5 seconds
