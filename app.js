@@ -1,89 +1,77 @@
-const clientId = 'f472cf64810b419e82483c50e1dd4587'; // Replace with your actual client ID
-const clientSecret = '2bf86aa82a18444db6abd5fd5819ca93'; // Replace with your actual client secret
-const redirectUri = 'https://flickerandframe.github.io/nzxt/'; // Replace with your actual redirect URI
+const clientId = 'f472cf64810b419e82483c50e1dd4587';
+const clientSecret = '2bf86aa82a18444db6abd5fd5819ca93';
+const refreshToken = 'AQCqUMwvhZvLGN2Lw7LrSqFuuArGHYHfl9kFwtiHKL9Dr49yFRUnzv7ExS5jGM0bQhJxhRsJczsxNqLKTaFVV8H2y4fLNgcLA-fP9cpiDt54kauruyC4mrKKJEuSJu206M0';
 
-// Function to get an access token
-async function getAccessToken() {
-    const response = await fetch('https://accounts.spotify.com/api/token', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',   
+const authUrl = 'https://accounts.spotify.com/api/token';
+const playerUrl = 'https://api.spotify.com/v1/me/player/currently-playing';
 
-            'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret)   
+const albumCover = document.getElementById('album-cover');
+const songTitle = document.getElementById('song-title');
+const artistName = document.getElementById('artist-name');
+const progressBar = document.querySelector('.progress-bar');
 
-        },
-        body: 'grant_type=authorization_code&code=' + code + '&redirect_uri=' + redirectUri
+// Fetch Spotify data
+async function fetchSpotifyData() {
+  try {
+    const token = await getAccessToken();
+    const response = await fetch(playerUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
-    const data = await response.json();
-    return data.access_token;   
-
+    if (response.status === 204 || response.status === 200) {
+      const data = await response.json();
+      updateUI(data);
+    } else {
+      showFallbackUI();
+    }
+  } catch (error) {
+    console.error('Error fetching Spotify data:', error);
+  }
 }
 
-// Function to fetch current playing track
-async function getCurrentTrack(accessToken) {
-    const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-        headers: {
-            'Authorization': 'Bearer   
- ' + accessToken
-        }
-    });
+// Update the UI with the song data
+function updateUI(data) {
+  const album = data.item.album;
+  const song = data.item.name;
+  const artist = data.item.artists.map((a) => a.name).join(', ');
 
-    const data = await response.json();   
+  albumCover.src = album.images[0].url;
+  songTitle.textContent = song;
+  artistName.textContent = artist;
 
-    return data;
+  // Update progress bar and animations
+  const duration = data.item.duration_ms;
+  const progress = data.progress_ms;
+  animateProgressBar(progress, duration);
+
+  // Crossfade handling (use opacity transitions)
 }
 
-// Function to fetch recently played tracks
-async function getRecentlyPlayedTracks(accessToken) {
-    const response = await fetch('https://api.spotify.com/v1/me/recently-played', {
-        headers: {
-            'Authorization': 'Bearer ' + accessToken
-        }
-    });
-
-    const data = await response.json();
-    return data.items;
+// Animate the circular progress bar
+function animateProgressBar(progress, duration) {
+  const progressRatio = (progress / duration) * 100;
+  progressBar.style.strokeDasharray = `${progressRatio} 100`;
 }
 
-// Function to update the display
-function updateDisplay(currentTrack, recentTracks) {
-    document.getElementById('current-song-title').textContent = currentTrack.item.name;
-    document.getElementById('current-song-artist').textContent = currentTrack.item.artists[0].name;
-    document.querySelector('.current-song img').src = currentTrack.item.album.images[0].url;
-
-    const recentTracksList = document.getElementById('recent-tracks-list');
-    recentTracksList.innerHTML = '';
-    recentTracks.forEach(track => {
-        const li = document.createElement('li');
-        li.textContent = `${track.track.name} - ${track.track.artists[0].name}`;
-        recentTracksList.appendChild(li);
-    });
+// Show fallback UI when no music is playing
+function showFallbackUI() {
+  const fallbackContent = document.querySelector('.fallback-content');
+  fallbackContent.style.display = 'block';
+  updateClock();
 }
 
-// Function to update the clock
+// Update the time display in fallback
 function updateClock() {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString();
-    document.getElementById('clock').textContent = timeString;   
-
+  const timeDisplay = document.getElementById('time-display');
+  const now = new Date();
+  timeDisplay.textContent = now.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
 }
 
-// Main function to initialize the application
-async function init() {
-    // Get the access token (you'll need to implement the authorization flow)
-    const accessToken = await getAccessToken();
-
-    // Fetch current playing track and recently played tracks
-    const currentTrack = await getCurrentTrack(accessToken);
-    const recentTracks = await getRecentlyPlayedTracks(accessToken);
-
-    // Update the display
-    updateDisplay(currentTrack, recentTracks);
-
-    // Update the clock every second
-    setInterval(updateClock, 1000);
-}
-
-// Initialize the application
-init();
+fetchSpotifyData();
+setInterval(fetchSpotifyData, 30000); // Refresh every 30 seconds
