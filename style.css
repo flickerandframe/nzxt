@@ -54,14 +54,16 @@ body {
 
 /* Album Art */
 #album-art {
-    width: 240px;  /* Increased size */
-    height: 240px; /* Increased size */
+    width: 240px;  /* Adjusted size */
+    height: 240px; /* Adjusted size */
     border-radius: 15px;
     margin-bottom: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    opacity: 0; /* Start hidden */
+    transition: opacity 0.5s ease; /* Fade transition for album art */
 }
 
-/* Track Information */
+/* Track Name and Artist Name transitions */
 .track-info {
     color: white;
     padding: 10px; /* Consistent padding */
