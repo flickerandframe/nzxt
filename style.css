@@ -67,16 +67,20 @@ body {
     padding: 10px; /* Consistent padding */
 }
 
+/* Track Name */
 #track-name {
     font-size: 26px;
     font-weight: 700;
     margin-bottom: 5px; /* Consistent margin */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Added drop shadow */
 }
 
+/* Artist Name */
 #artist-name {
     font-size: 20px;
     font-weight: 400;
     color: #b3b3b3;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Added drop shadow */
 }
 
 /* Placeholder */
