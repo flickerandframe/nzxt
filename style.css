@@ -1,4 +1,4 @@
-/* Global reset */
+/* Reset */
 * {
     margin: 0;
     padding: 0;
@@ -14,10 +14,10 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-/* Kraken Display Style */
+/* Kraken Display (circular) */
 .kraken-display {
-    width: 600px;
-    height: 600px;
+    width: 500px;
+    height: 500px;
     position: relative;
     border-radius: 50%;
     overflow: hidden;
@@ -27,7 +27,7 @@ body {
     box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.7);
 }
 
-/* Background Blur */
+/* Blurred Background */
 .background-blur {
     position: absolute;
     top: 0;
@@ -37,11 +37,11 @@ body {
     border-radius: 50%;
     background-size: cover;
     background-position: center;
-    filter: blur(30px) brightness(0.5);
+    filter: blur(20px);
     z-index: 1;
 }
 
-/* Foreground content */
+/* Content Layer (Album Art and Text) */
 .content {
     position: relative;
     z-index: 2;
@@ -50,7 +50,15 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 0 20px; /* Add horizontal padding */
+}
+
+/* Album Art */
+#album-art {
+    width: 240px;  /* Increased size */
+    height: 240px; /* Increased size */
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 /* Track Information */
@@ -60,22 +68,18 @@ body {
 }
 
 #track-name {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 700;
     margin-bottom: 5px; /* Consistent margin */
-    white-space: nowrap; /* Prevent text wrapping */
-    overflow: hidden; /* Hide overflow text */
-    text-overflow: ellipsis; /* Add ellipsis for long text */
 }
 
 #artist-name {
     font-size: 20px;
     font-weight: 400;
     color: #b3b3b3;
-    white-space: nowrap; /* Prevent text wrapping */
-    overflow: hidden; /* Hide overflow text */
-    text-overflow: ellipsis; /* Add ellipsis for long text */
+}
 
+/* Placeholder */
 .placeholder {
     display: none; /* Hidden by default */
     color: white;
