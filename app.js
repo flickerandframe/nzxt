@@ -36,7 +36,7 @@ function fetchCurrentlyPlaying(accessToken) {
                 crossfadeElements(albumArt, trackName, artistName, backgroundBlur, albumImageUrl, track, artist);
             }
         } else {
-            // Show placeholder if no track is playing
+            // Show placeholder and time if no track is playing
             showPlaceholder(true);
         }
     })
@@ -82,20 +82,28 @@ function showPlaceholder(show) {
     const albumArt = document.getElementById('album-art');
     const trackName = document.getElementById('track-name');
     const artistName = document.getElementById('artist-name');
+    const currentTime = document.getElementById('current-time');
 
     if (show) {
         // Fade out the currently displayed elements
-        fadeOutAllElements([albumArt, trackName, artistName], () => {
+        fadeOutAllElements([albumArt, trackName, artistName, backgroundBlur], () => {
             placeholderText.classList.remove('hidden');
-            fadeInAllElements([placeholderText]);
+            currentTime.textContent = getCurrentTimeEST();
+            fadeInAllElements([placeholderText, currentTime]);
         });
     } else {
         // Fade out the placeholder and show actual track information
-        fadeOutAllElements([placeholderText], () => {
+        fadeOutAllElements([placeholderText, currentTime], () => {
             placeholderText.classList.add('hidden');
             fadeInAllElements([albumArt, trackName, artistName]);
         });
     }
+}
+
+// Function to get the current time in EST
+function getCurrentTimeEST() {
+    const options = { timeZone: 'America/New_York', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+    return new Intl.DateTimeFormat('en-US', options).format(new Date());
 }
 
 // Check if the user has already logged in
