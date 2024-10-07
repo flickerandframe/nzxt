@@ -16,7 +16,7 @@ function fetchCurrentlyPlaying(accessToken) {
         const artistName = document.getElementById('artist-name');
         const backgroundBlur = document.getElementById('background-blur');
         const placeholderText = document.getElementById('placeholder');
-        
+
         if (data && data.is_playing) {
             const albumImageUrl = data.item.album.images[0].url;
             const track = data.item.name;
@@ -44,16 +44,29 @@ function fetchCurrentlyPlaying(accessToken) {
 // Function to show or hide the placeholder
 function showPlaceholder(show) {
     const placeholderText = document.getElementById('placeholder');
+    const albumArt = document.getElementById('album-art');
+    const trackName = document.getElementById('track-name');
+    const artistName = document.getElementById('artist-name');
 
     if (show) {
         placeholderText.classList.remove('hidden');
         placeholderText.classList.add('visible');
+
+        // Fade out track info
+        trackName.style.opacity = 0;
+        artistName.style.opacity = 0;
 
         setTimeout(() => {
             placeholderText.style.display = 'flex'; // Ensure it displays during the fade
         }, 0);
     } else {
         placeholderText.classList.remove('visible');
+
+        // Fade in track info
+        setTimeout(() => {
+            trackName.style.opacity = 1;
+            artistName.style.opacity = 1;
+        }, 500); // Match with the CSS transition duration for placeholder
 
         // After fade out, hide completely
         setTimeout(() => {
