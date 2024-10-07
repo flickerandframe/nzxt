@@ -1,6 +1,6 @@
 // Spotify credentials
-const clientId = 'f472cf64810b419e82483c50e1dd4587';
-const redirectUri = 'https://flickerandframe.github.io/nzxt/';
+const clientId = 'YOUR_CLIENT_ID';
+const redirectUri = 'YOUR_REDIRECT_URI';
 
 // Check if the user has already logged in
 if (window.location.hash) {
@@ -21,7 +21,9 @@ function fetchCurrentlyPlaying(accessToken) {
     .then(response => response.json())
     .then(data => {
         if (data && data.is_playing) {
-            document.getElementById('album-art').src = data.item.album.images[0].url;
+            const albumImageUrl = data.item.album.images[0].url;
+            document.getElementById('album-art').src = albumImageUrl;
+            document.getElementById('background-blur').style.backgroundImage = `url(${albumImageUrl})`;
             document.getElementById('track-name').textContent = data.item.name;
             document.getElementById('artist-name').textContent = data.item.artists.map(artist => artist.name).join(', ');
         } else {
