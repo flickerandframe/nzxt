@@ -1,4 +1,4 @@
-const accessToken = 'BQAdoZUV_-v8l18PmfFmfHnC8RHQ6q41ZWChLDCObnywsDKzNm6vSE9KO6-_PpqMYSr8Cm_CGHg6m1C9-RE7GAhMBAL7Ed6ungPXXA0WJxlDyftxPE3qICMhx3xUHsrvJXIk3BpTCMjZI-k0xK93Zxn4hE7vvJ2JRzirMXgmp8hRtAkRi9fVT2WK_fiMeY9A4XhKqyEKAq8Yc_MeCzhuLQ'; // Replace with your Spotify access token
+const accessToken = 'BQB0Kio0HPgPzK_7O_cLmtXjgyvLJo6PlSAXuDLeessW3-h0sPfdMPweOa-RGbBFmhfvUJGJiWeXcxiy9sGmeiGGc0Rht2ph3pR22ngmno6JdZvm4XGQruTZo4vHpPqVyP6TfKHlUZuO1Y6cib4ZIVh906FMM4G5BivbRoQUiRaIYlwmPvjjRmeKuyYA03lM2FC7WKyGY02IfdUtGUATwA'; // Replace with your Spotify access token
 async function fetchCurrentlyPlaying() {
   try {
     const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
