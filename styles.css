@@ -1,4 +1,3 @@
-/* Font loading and global styles */
 @font-face {
   font-family: 'CustomRegular';
   src: url('reg.otf') format('opentype');
@@ -31,7 +30,6 @@ body {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
-/* Background for the clock mode */
 .clock-bg {
   background-color: #fff;
 }
@@ -47,7 +45,6 @@ body {
   background-position: center;
   z-index: 1;
   transition: opacity 0.3s ease, background-color 0.3s ease;
-  opacity: 1;
 }
 
 .progress-circle {
@@ -65,7 +62,7 @@ body {
 }
 
 #progress {
-  stroke: black;
+  stroke: white;
   stroke-dasharray: 1913;
   stroke-dashoffset: 1913;
   stroke-linecap: round;
@@ -96,7 +93,6 @@ body {
   margin-top: -5px;
 }
 
-/* Clock-specific styling */
 #current-time, #song-title {
   font-family: 'CustomBold', Arial, sans-serif;
   font-size: 4rem;
