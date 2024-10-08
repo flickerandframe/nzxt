@@ -54,4 +54,61 @@ async function fetchCurrentlyPlaying() {
 
 function updateDisplay(track, progress, duration, fadeIn) {
   const albumCover = document.getElementById('album-cover');
-  const songTitle = document.getElementById
+  const songTitle = document.getElementById('song-title');
+  const artistName = document.getElementById('artist-name');
+  const blurBg = document.getElementById('blur-bg');
+  const content = document.getElementById('content');
+
+  if (fadeIn) {
+    content.style.opacity = '0';
+    blurBg.style.opacity = '0';
+
+    setTimeout(() => {
+      albumCover.src = track.album.images[0].url;
+      songTitle.textContent = track.name;
+      artistName.textContent = track.artists.map(artist => artist.name).join(', ');
+      blurBg.style.backgroundImage = `url(${track.album.images[0].url})`;
+
+      content.style.opacity = '1';
+      blurBg.style.opacity = '1';
+    }, 300);
+  }
+
+  updateProgressBar(progress, duration);
+}
+
+function updateProgressBar(progress, duration) {
+  const progressRatio = progress / duration;
+  const offset = 1913 * (1 - progressRatio);
+  progressCircle.style.strokeDashoffset = offset;
+}
+
+function updateTimeDisplay() {
+  const now = new Date();
+  const time = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  const day = now.toLocaleDateString([], { weekday: 'long' });
+
+  document.getElementById('current-time').textContent = time;
+  document.getElementById('current-day').textContent = day;
+
+  // Use progress bar to represent seconds
+  const secondsRatio = now.getSeconds() / 60;
+  const offset = 1913 * (1 - secondsRatio);
+  progressCircle.style.strokeDashoffset = offset;
+}
+
+function showTimeDisplay() {
+  document.getElementById('album-cover').classList.add('hidden');
+  document.getElementById('song-title').classList.add('hidden');
+  document.getElementById('artist-name').classList.add('hidden');
+  document.getElementById('time-display').classList.remove('hidden');
+  document.getElementById('content').style.opacity = '1';
+}
+
+function showMusicInfo() {
+  document.getElementById('album-cover').classList.remove('hidden');
+  document.getElementById('song-title').classList.remove('hidden');
+  document.getElementById('artist-name').classList.remove('hidden');
+  document.getElementById('time-display').classList.add('hidden');
+  document.getElementById('content').style.opacity = '1';
+}
