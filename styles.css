@@ -10,8 +10,8 @@ body {
 
 .circular-display {
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 420px;
+  height: 420px;
   border-radius: 50%;
   overflow: hidden;
   display: flex;
@@ -26,7 +26,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  filter: blur(20px);
+  filter: blur(30px);
   background-size: cover;
   background-position: center;
   z-index: 1;
@@ -42,16 +42,17 @@ body {
 
 .progress-circle circle {
   fill: none;
-  stroke-width: 8;
-  opacity: 0.2;
+  stroke-width: 4;
+  opacity: 0.3;
 }
 
 #progress {
-  stroke: #1DB954;
-  stroke-dasharray: 880; /* Approximation for a full circle */
-  stroke-dashoffset: 880;
+  stroke: white;
+  stroke-dasharray: 1194; /* Full circle */
+  stroke-dashoffset: 1194;
+  stroke-linecap: round;
   opacity: 1;
-  transition: stroke-dashoffset 0.5s linear;
+  transition: stroke-dashoffset 0.1s linear;
 }
 
 .content {
@@ -65,9 +66,9 @@ body {
 }
 
 #album-cover {
-  width: 150px;
-  height: 150px;
-  border-radius: 15px;
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   margin-bottom: 10px;
 }
