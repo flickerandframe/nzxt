@@ -30,10 +30,6 @@ body {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
-.clock-bg {
-  background-color: #fff;
-}
-
 .blur-bg {
   position: absolute;
   top: 0;
@@ -44,7 +40,12 @@ body {
   background-size: cover;
   background-position: center;
   z-index: 1;
-  transition: opacity 0.3s ease, background-color 0.3s ease;
+  transition: opacity 0.3s ease;
+  opacity: 1;
+}
+
+.clock-bg {
+  background-color: #fff;
 }
 
 .progress-circle {
@@ -85,12 +86,12 @@ body {
 
 #song-title {
   font-family: 'CustomBold', Arial, sans-serif;
-  padding: 0 30px;
+  padding: 0 30px; /* Prevents overflow */
 }
 
 #artist-name {
   font-family: 'CustomRegular', Arial, sans-serif;
-  margin-top: -5px;
+  margin-top: -5px; /* Reduces bottom padding */
 }
 
 #current-time, #song-title {
