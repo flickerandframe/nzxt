@@ -72,6 +72,8 @@ body {
   z-index: 3;
   transition: opacity 0.3s ease;
   font-family: 'CustomBold';
+  padding: 20px; /* Square padding inside the circle */
+  box-sizing: border-box; /* Include padding in total width/height */
 }
 
 #album-cover {
@@ -86,32 +88,33 @@ body {
   display: none;
 }
 
-#time-display {
-  transition: opacity 0.3s ease; /* Add fade transition */
-}
-
 #time-display h2, #time-display p {
   font-family: 'CustomRegular'; /* Change to regular font */
   margin: 0;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
 }
 
 #current-time {
   font-size: 2.5rem;
   font-family: 'CustomBold'; /* Keep bold for time */
   padding: 0 20px; /* Add padding to prevent overflow */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
 }
 
 #current-day {
   font-size: 1.2rem;
   color: #ccc;
   font-family: 'CustomRegular'; /* Regular for date */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
 }
 
 #song-title {
   padding: 0 20px; /* Add side padding */
   margin-bottom: 5px; /* Reduce bottom margin */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
 }
 
 #artist-name {
   font-family: 'CustomRegular'; /* Regular for artist name */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
 }
