@@ -4,7 +4,7 @@ const scopes = ['user-read-playback-state', 'user-read-currently-playing'];
 const hash = window.location.hash;
 let accessToken = localStorage.getItem('spotifyAccessToken') || null;
 const progressCircle = document.getElementById('progress');
-let currentTrackId = null; // To keep track of the current song
+let currentTrackId = null;
 
 function redirectToSpotify() {
   const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
@@ -21,7 +21,7 @@ if (!accessToken) {
   redirectToSpotify();
 } else {
   fetchCurrentlyPlaying();
-  setInterval(fetchCurrentlyPlaying, 100); // Frequent checks for better sync
+  setInterval(fetchCurrentlyPlaying, 100);
 }
 
 async function fetchCurrentlyPlaying() {
@@ -37,14 +37,13 @@ async function fetchCurrentlyPlaying() {
     }
 
     const data = await response.json();
-    const trackId = data.item.id; // The ID of the currently playing track
+    const trackId = data.item.id;
     
-    // Only update and fade if the song has changed
     if (trackId !== currentTrackId) {
-      currentTrackId = trackId; // Update the current track ID
+      currentTrackId = trackId;
       updateDisplay(data.item, data.progress_ms, data.item.duration_ms, true);
     } else {
-      updateProgressBar(data.progress_ms, data.item.duration_ms); // Only update progress
+      updateProgressBar(data.progress_ms, data.item.duration_ms);
     }
   } catch (error) {
     console.error('Error fetching currently playing song:', error);
@@ -58,20 +57,19 @@ function updateDisplay(track, progress, duration, fadeIn) {
   const blurBg = document.getElementById('blur-bg');
   const content = document.getElementById('content');
 
-  // Update content directly with no fade if not changing song
   if (fadeIn) {
-    content.style.opacity = '0'; // Start faded out
+    content.style.opacity = '0';
+    blurBg.style.opacity = '0'; // Start faded out
 
     setTimeout(() => {
-      // Set new song details
       albumCover.src = track.album.images[0].url;
       songTitle.textContent = track.name;
       artistName.textContent = track.artists.map(artist => artist.name).join(', ');
       blurBg.style.backgroundImage = `url(${track.album.images[0].url})`;
       
-      // Fade in new content
       content.style.opacity = '1';
-    }, 300); // Sync with fade transition time
+      blurBg.style.opacity = '1'; // Fade in both content and background
+    }, 300);
   }
 
   updateProgressBar(progress, duration);
