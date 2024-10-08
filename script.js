@@ -20,7 +20,7 @@ if (!accessToken) {
   redirectToSpotify();
 } else {
   fetchCurrentlyPlaying();
-  setInterval(fetchCurrentlyPlaying, 5000);
+  setInterval(fetchCurrentlyPlaying, 3000); // Increased frequency for more responsiveness
 }
 
 async function fetchCurrentlyPlaying() {
@@ -49,19 +49,21 @@ function updateDisplay(track, progress, duration) {
   const blurBg = document.getElementById('blur-bg');
   const content = document.getElementById('content');
   
-  content.classList.add('fade');
+  content.style.opacity = '0';
+  
   setTimeout(() => {
     albumCover.src = track.album.images[0].url;
     songTitle.textContent = track.name;
     artistName.textContent = track.artists.map(artist => artist.name).join(', ');
     blurBg.style.backgroundImage = `url(${track.album.images[0].url})`;
+    
+    content.style.opacity = '1';
     updateProgressBar(progress, duration);
-    content.classList.remove('fade');
   }, 500);
 }
 
 function updateProgressBar(progress, duration) {
   const progressRatio = progress / duration;
-  const offset = 880 * (1 - progressRatio);
+  const offset = 1194 * (1 - progressRatio);
   progressCircle.style.strokeDashoffset = offset;
 }
