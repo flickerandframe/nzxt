@@ -1,3 +1,4 @@
+/* Font loading and global styles */
 @font-face {
   font-family: 'CustomRegular';
   src: url('reg.otf') format('opentype');
@@ -30,6 +31,11 @@ body {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
+/* Background for the clock mode */
+.clock-bg {
+  background-color: #fff;
+}
+
 .blur-bg {
   position: absolute;
   top: 0;
@@ -40,7 +46,7 @@ body {
   background-size: cover;
   background-position: center;
   z-index: 1;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
   opacity: 1;
 }
 
@@ -59,8 +65,8 @@ body {
 }
 
 #progress {
-  stroke: white;
-  stroke-dasharray: 1913; /* Full circle for r=305 */
+  stroke: black;
+  stroke-dasharray: 1913;
   stroke-dashoffset: 1913;
   stroke-linecap: round;
   transition: stroke-dashoffset 0.1s linear;
@@ -82,22 +88,24 @@ body {
 
 #song-title {
   font-family: 'CustomBold', Arial, sans-serif;
-  padding: 0 30px; /* Prevents overflow */
+  padding: 0 30px;
 }
 
 #artist-name {
   font-family: 'CustomRegular', Arial, sans-serif;
-  margin-top: -5px; /* Reduces bottom padding */
+  margin-top: -5px;
 }
 
+/* Clock-specific styling */
 #current-time, #song-title {
   font-family: 'CustomBold', Arial, sans-serif;
-  margin: 0;
+  font-size: 4rem;
+  color: black;
 }
 
 #current-day, #artist-name {
   font-family: 'CustomRegular', Arial, sans-serif;
-  color: #ccc;
+  color: #777;
   margin-top: 5px;
 }
 
