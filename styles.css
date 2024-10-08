@@ -1,11 +1,22 @@
+/* Load custom fonts */
+@font-face {
+  font-family: 'CustomRegular';
+  src: url('reg.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'CustomBold';
+  src: url('bold.otf') format('opentype');
+}
+
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: #000;
-  font-family: Arial, sans-serif;
   color: #fff;
+  font-family: 'CustomRegular', Arial, sans-serif;
 }
 
 .circular-display {
@@ -30,7 +41,7 @@ body {
   background-size: cover;
   background-position: center;
   z-index: 1;
-  transition: opacity 0.3s ease; /* Same fade effect as the content */
+  transition: opacity 0.3s ease;
   opacity: 1;
 }
 
@@ -44,13 +55,13 @@ body {
 
 .progress-circle circle {
   fill: none;
-  stroke-width: 5; /* Thicker progress bar */
+  stroke-width: 5;
   opacity: 0.3;
 }
 
 #progress {
   stroke: white;
-  stroke-dasharray: 1288; /* Full circle for r=205 */
+  stroke-dasharray: 1288;
   stroke-dashoffset: 1288;
   stroke-linecap: round;
   transition: stroke-dashoffset 0.1s linear;
@@ -60,16 +71,31 @@ body {
   text-align: center;
   z-index: 3;
   transition: opacity 0.3s ease;
-}
-
-.fade-out {
-  opacity: 0;
+  font-family: 'CustomBold', Arial, sans-serif;
 }
 
 #album-cover {
   width: 210px;
   height: 210px;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   margin-bottom: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+#time-display h2, #time-display p {
+  font-family: 'CustomBold', Arial, sans-serif;
+  margin: 0;
+}
+
+#current-time {
+  font-size: 2.5rem;
+}
+
+#current-day {
+  font-size: 1.2rem;
+  color: #ccc;
 }
