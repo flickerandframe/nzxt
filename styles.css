@@ -1,4 +1,3 @@
-/* Load custom fonts */
 @font-face {
   font-family: 'CustomRegular';
   src: url('reg.otf') format('opentype');
@@ -13,10 +12,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 200vh;
+  height: 100vh;
   background-color: #000;
+  font-family: 'CustomRegular', Arial, sans-serif;
   color: #fff;
-  font-family: 'CustomRegular';
 }
 
 .circular-display {
@@ -42,7 +41,7 @@ body {
   background-position: center;
   z-index: 1;
   transition: opacity 0.3s ease;
-  opacity: 0.6;
+  opacity: 1;
 }
 
 .progress-circle {
@@ -61,8 +60,8 @@ body {
 
 #progress {
   stroke: white;
-  stroke-dasharray: 1288;
-  stroke-dashoffset: 1288;
+  stroke-dasharray: 1913; /* Full circle for r=305 */
+  stroke-dashoffset: 1913;
   stroke-linecap: round;
   transition: stroke-dashoffset 0.1s linear;
 }
@@ -71,50 +70,37 @@ body {
   text-align: center;
   z-index: 3;
   transition: opacity 0.3s ease;
-  font-family: 'CustomBold';
-  padding: 20px; /* Square padding inside the circle */
-  box-sizing: border-box; /* Include padding in total width/height */
 }
 
 #album-cover {
-  width: 210px;
-  height: 210px;
-  border-radius: 5px;
-  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5);
-  margin-bottom: 10px;
+  width: 300px;
+  height: 300px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+#song-title {
+  font-family: 'CustomBold', Arial, sans-serif;
+  padding: 0 30px; /* Prevents overflow */
+}
+
+#artist-name {
+  font-family: 'CustomRegular', Arial, sans-serif;
+  margin-top: -5px; /* Reduces bottom padding */
+}
+
+#current-time, #song-title {
+  font-family: 'CustomBold', Arial, sans-serif;
+  margin: 0;
+}
+
+#current-day, #artist-name {
+  font-family: 'CustomRegular', Arial, sans-serif;
+  color: #ccc;
+  margin-top: 5px;
 }
 
 .hidden {
   display: none;
-}
-
-#time-display h2, #time-display p {
-  font-family: 'CustomRegular'; /* Change to regular font */
-  margin: 0;
-  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
-}
-
-#current-time {
-  font-size: 2.5rem;
-  font-family: 'CustomBold'; /* Keep bold for time */
-  padding: 0 20px; /* Add padding to prevent overflow */
-  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
-}
-
-#current-day {
-  font-size: 1.2rem;
-  color: #ccc;
-  font-family: 'CustomRegular'; /* Regular for date */
-  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
-}
-
-#song-title {
-  padding: 0 20px; /* Add side padding */
-  margin-bottom: 5px; /* Reduce bottom margin */
-  text-shadow: 2px 0px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
-}
-
-#artist-name {
-  font-family: 'CustomRegular'; /* Regular for artist name */
-  text-shadow: 2px 0px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
 }
