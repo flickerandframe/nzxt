@@ -92,28 +92,19 @@ function updateProgressBar(progress, duration) {
   progressCircle.style.strokeDashoffset = offset * (percentage / 100);
 }
 
+// Other parts of the code remain unchanged
+
 function showTimeDisplay() {
-  const timeDisplay = document.getElementById('time-display');
-  timeDisplay.style.opacity = '0'; // Start with invisible
   document.getElementById('album-cover').classList.add('hidden');
   document.getElementById('song-title').classList.add('hidden');
   document.getElementById('artist-name').classList.add('hidden');
-  
-  setTimeout(() => {
-    timeDisplay.classList.remove('hidden');
-    timeDisplay.style.opacity = '1'; // Fade in
-  }, 300);
+  document.getElementById('time-display').classList.remove('hidden');
 }
 
 function showMusicInfo() {
-  const timeDisplay = document.getElementById('time-display');
-  timeDisplay.style.opacity = '0'; // Start with invisible
   document.getElementById('album-cover').classList.remove('hidden');
   document.getElementById('song-title').classList.remove('hidden');
   document.getElementById('artist-name').classList.remove('hidden');
-  
-  setTimeout(() => {
-    timeDisplay.classList.add('hidden');
-    timeDisplay.style.opacity = '1'; // Fade in
-  }, 300);
+  document.getElementById('time-display').classList.add('hidden');
 }
+
