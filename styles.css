@@ -86,18 +86,32 @@ body {
   display: none;
 }
 
+#time-display {
+  transition: opacity 0.3s ease; /* Add fade transition */
+}
+
 #time-display h2, #time-display p {
-  font-family: 'CustomBold';
+  font-family: 'CustomRegular'; /* Change to regular font */
   margin: 0;
 }
 
 #current-time {
   font-size: 2.5rem;
-  font-family: 'CustomBold';
+  font-family: 'CustomBold'; /* Keep bold for time */
+  padding: 0 20px; /* Add padding to prevent overflow */
 }
 
 #current-day {
   font-size: 1.2rem;
   color: #ccc;
-  font-family: 'CustomRegular';
+  font-family: 'CustomRegular'; /* Regular for date */
+}
+
+#song-title {
+  padding: 0 20px; /* Add side padding */
+  margin-bottom: 5px; /* Reduce bottom margin */
+}
+
+#artist-name {
+  font-family: 'CustomRegular'; /* Regular for artist name */
 }
