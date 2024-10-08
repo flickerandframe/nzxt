@@ -20,7 +20,7 @@ if (!accessToken) {
   redirectToSpotify();
 } else {
   fetchCurrentlyPlaying();
-  setInterval(fetchCurrentlyPlaying, 3000); // Increased frequency for more responsiveness
+  setInterval(fetchCurrentlyPlaying, 2000); // Faster check interval for more responsiveness
 }
 
 async function fetchCurrentlyPlaying() {
@@ -48,22 +48,28 @@ function updateDisplay(track, progress, duration) {
   const artistName = document.getElementById('artist-name');
   const blurBg = document.getElementById('blur-bg');
   const content = document.getElementById('content');
-  
-  content.style.opacity = '0';
-  
+
+  // Fade in new content before fading out the old
+  albumCover.src = track.album.images[0].url;
+  songTitle.textContent = track.name;
+  artistName.textContent = track.artists.map(artist => artist.name).join(', ');
+  blurBg.style.backgroundImage = `url(${track.album.images[0].url})`;
+
+  // Immediate fade-in
+  content.classList.remove('fade-out');
+  content.style.opacity = '1';
+
+  // Wait a short moment then fade out old content
   setTimeout(() => {
-    albumCover.src = track.album.images[0].url;
-    songTitle.textContent = track.name;
-    artistName.textContent = track.artists.map(artist => artist.name).join(', ');
-    blurBg.style.backgroundImage = `url(${track.album.images[0].url})`;
-    
-    content.style.opacity = '1';
-    updateProgressBar(progress, duration);
-  }, 500);
+    content.classList.add('fade-out');
+    content.style.opacity = '0';
+  }, 250); // Ensure quick fade-out after new content is visible
+
+  updateProgressBar(progress, duration);
 }
 
 function updateProgressBar(progress, duration) {
   const progressRatio = progress / duration;
-  const offset = 1194 * (1 - progressRatio);
+  const offset = 1288 * (1 - progressRatio);
   progressCircle.style.strokeDashoffset = offset;
 }
