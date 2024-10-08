@@ -31,7 +31,7 @@ async function fetchCurrentlyPlaying() {
 
     if (response.status === 204 || response.status === 401) {
       localStorage.removeItem('spotifyAccessToken');
-      return; // Wait until music starts again before reauthorizing
+      return;
     }
 
     const data = await response.json();
@@ -68,6 +68,7 @@ function updateDisplay(track, progress, duration, fadeIn) {
       songTitle.textContent = track.name;
       artistName.textContent = track.artists.map(artist => artist.name).join(', ');
       blurBg.style.backgroundImage = `url(${track.album.images[0].url})`;
+      blurBg.classList.remove('clock-bg');
 
       content.style.opacity = '1';
       blurBg.style.opacity = '1';
@@ -91,24 +92,37 @@ function updateTimeDisplay() {
   document.getElementById('current-time').textContent = time;
   document.getElementById('current-day').textContent = day;
 
-  // Use progress bar to represent seconds
   const secondsRatio = now.getSeconds() / 60;
   const offset = 1913 * (1 - secondsRatio);
   progressCircle.style.strokeDashoffset = offset;
 }
 
 function showTimeDisplay() {
+  const blurBg = document.getElementById('blur-bg');
+  const content = document.getElementById('content');
+
+  blurBg.classList.add('clock-bg');
+  progressCircle.setAttribute('stroke', 'black');
+
   document.getElementById('album-cover').classList.add('hidden');
   document.getElementById('song-title').classList.add('hidden');
   document.getElementById('artist-name').classList.add('hidden');
   document.getElementById('time-display').classList.remove('hidden');
-  document.getElementById('content').style.opacity = '1';
+
+  content.style.opacity = '1'; // Fade in the clock display
 }
 
 function showMusicInfo() {
+  const blurBg = document.getElementById('blur-bg');
+  const content = document.getElementById('content');
+
+  blurBg.classList.remove('clock-bg');
+  progressCircle.setAttribute('stroke', 'white');
+
   document.getElementById('album-cover').classList.remove('hidden');
   document.getElementById('song-title').classList.remove('hidden');
   document.getElementById('artist-name').classList.remove('hidden');
   document.getElementById('time-display').classList.add('hidden');
-  document.getElementById('content').style.opacity = '1';
+
+  content.style.opacity = '1'; // Fade in the song info display
 }
