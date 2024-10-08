@@ -80,7 +80,7 @@ body {
   width: 210px;
   height: 210px;
   border-radius: 5px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5);
   margin-bottom: 10px;
 }
 
@@ -91,30 +91,30 @@ body {
 #time-display h2, #time-display p {
   font-family: 'CustomRegular'; /* Change to regular font */
   margin: 0;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
 }
 
 #current-time {
   font-size: 2.5rem;
   font-family: 'CustomBold'; /* Keep bold for time */
   padding: 0 20px; /* Add padding to prevent overflow */
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
 }
 
 #current-day {
   font-size: 1.2rem;
   color: #ccc;
   font-family: 'CustomRegular'; /* Regular for date */
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
 }
 
 #song-title {
   padding: 0 20px; /* Add side padding */
   margin-bottom: 5px; /* Reduce bottom margin */
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
+  text-shadow: 2px 0px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
 }
 
 #artist-name {
   font-family: 'CustomRegular'; /* Regular for artist name */
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
+  text-shadow: 2px 0px 5px rgba(0, 0, 0, 0.7); /* Add drop shadow */
 }
