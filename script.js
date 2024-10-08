@@ -4,6 +4,7 @@ const scopes = ['user-read-playback-state', 'user-read-currently-playing'];
 const hash = window.location.hash;
 let accessToken = localStorage.getItem('spotifyAccessToken') || null;
 const progressCircle = document.getElementById('progress');
+const blurBg = document.getElementById('blur-bg');
 let currentTrackId = null;
 
 function redirectToSpotify() {
@@ -20,7 +21,7 @@ if (!accessToken && hash) {
 if (accessToken) {
   fetchCurrentlyPlaying();
   setInterval(fetchCurrentlyPlaying, 2000);
-  setInterval(updateTimeDisplay, 100);
+  setInterval(updateTimeDisplay, 1000);
 }
 
 async function fetchCurrentlyPlaying() {
@@ -40,7 +41,7 @@ async function fetchCurrentlyPlaying() {
       const trackId = data.item.id;
       if (trackId !== currentTrackId) {
         currentTrackId = trackId;
-        updateDisplay(data.item, data.progress_ms, data.item.duration_ms, true);
+        updateDisplay(data.item, data.progress_ms, data.item.duration_ms);
       } else {
         updateProgressBar(data.progress_ms, data.item.duration_ms);
       }
@@ -52,28 +53,16 @@ async function fetchCurrentlyPlaying() {
   }
 }
 
-function updateDisplay(track, progress, duration, fadeIn) {
+function updateDisplay(track, progress, duration) {
   const albumCover = document.getElementById('album-cover');
   const songTitle = document.getElementById('song-title');
   const artistName = document.getElementById('artist-name');
-  const blurBg = document.getElementById('blur-bg');
-  const content = document.getElementById('content');
 
-  if (fadeIn) {
-    content.style.opacity = '0';
-    blurBg.style.opacity = '0';
-
-    setTimeout(() => {
-      albumCover.src = track.album.images[0].url;
-      songTitle.textContent = track.name;
-      artistName.textContent = track.artists.map(artist => artist.name).join(', ');
-      blurBg.style.backgroundImage = `url(${track.album.images[0].url})`;
-      blurBg.classList.remove('clock-bg');
-
-      content.style.opacity = '1';
-      blurBg.style.opacity = '1';
-    }, 300);
-  }
+  albumCover.src = track.album.images[0].url;
+  songTitle.textContent = track.name;
+  artistName.textContent = track.artists.map(artist => artist.name).join(', ');
+  blurBg.style.backgroundImage = `url(${track.album.images[0].url})`;
+  blurBg.classList.remove('clock-bg');
 
   updateProgressBar(progress, duration);
 }
@@ -98,31 +87,18 @@ function updateTimeDisplay() {
 }
 
 function showTimeDisplay() {
-  const blurBg = document.getElementById('blur-bg');
-  const content = document.getElementById('content');
-
   blurBg.classList.add('clock-bg');
-  progressCircle.setAttribute('stroke', 'black');
-
   document.getElementById('album-cover').classList.add('hidden');
   document.getElementById('song-title').classList.add('hidden');
   document.getElementById('artist-name').classList.add('hidden');
   document.getElementById('time-display').classList.remove('hidden');
-
-  content.style.opacity = '1'; // Fade in the clock display
+  blurBg.style.backgroundImage = '';  // Clear the album cover background
 }
 
 function showMusicInfo() {
-  const blurBg = document.getElementById('blur-bg');
-  const content = document.getElementById('content');
-
   blurBg.classList.remove('clock-bg');
-  progressCircle.setAttribute('stroke', 'white');
-
   document.getElementById('album-cover').classList.remove('hidden');
   document.getElementById('song-title').classList.remove('hidden');
   document.getElementById('artist-name').classList.remove('hidden');
   document.getElementById('time-display').classList.add('hidden');
-
-  content.style.opacity = '1'; // Fade in the song info display
 }
