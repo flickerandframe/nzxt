@@ -21,7 +21,8 @@ if (!accessToken) {
   redirectToSpotify();
 } else {
   fetchCurrentlyPlaying();
-  setInterval(fetchCurrentlyPlaying, 100);
+  setInterval(fetchCurrentlyPlaying, 2000); // Regularly check for updates
+  setInterval(updateTimeDisplay, 1000); // Update time every second
 }
 
 async function fetchCurrentlyPlaying() {
@@ -37,13 +38,17 @@ async function fetchCurrentlyPlaying() {
     }
 
     const data = await response.json();
-    const trackId = data.item.id;
-    
-    if (trackId !== currentTrackId) {
-      currentTrackId = trackId;
-      updateDisplay(data.item, data.progress_ms, data.item.duration_ms, true);
+    if (data && data.is_playing) {
+      showMusicInfo();
+      const trackId = data.item.id;
+      if (trackId !== currentTrackId) {
+        currentTrackId = trackId;
+        updateDisplay(data.item, data.progress_ms, data.item.duration_ms, true);
+      } else {
+        updateProgressBar(data.progress_ms, data.item.duration_ms);
+      }
     } else {
-      updateProgressBar(data.progress_ms, data.item.duration_ms);
+      showTimeDisplay();
     }
   } catch (error) {
     console.error('Error fetching currently playing song:', error);
@@ -55,28 +60,4 @@ function updateDisplay(track, progress, duration, fadeIn) {
   const songTitle = document.getElementById('song-title');
   const artistName = document.getElementById('artist-name');
   const blurBg = document.getElementById('blur-bg');
-  const content = document.getElementById('content');
-
-  if (fadeIn) {
-    content.style.opacity = '0';
-    blurBg.style.opacity = '0'; // Start faded out
-
-    setTimeout(() => {
-      albumCover.src = track.album.images[0].url;
-      songTitle.textContent = track.name;
-      artistName.textContent = track.artists.map(artist => artist.name).join(', ');
-      blurBg.style.backgroundImage = `url(${track.album.images[0].url})`;
-      
-      content.style.opacity = '1';
-      blurBg.style.opacity = '1'; // Fade in both content and background
-    }, 300);
-  }
-
-  updateProgressBar(progress, duration);
-}
-
-function updateProgressBar(progress, duration) {
-  const progressRatio = progress / duration;
-  const offset = 1288 * (1 - progressRatio);
-  progressCircle.style.strokeDashoffset = offset;
-}
+  const content
