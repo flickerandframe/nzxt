@@ -1,64 +1,56 @@
-const accessToken = 'BQB0Kio0HPgPzK_7O_cLmtXjgyvLJo6PlSAXuDLeessW3-h0sPfdMPweOa-RGbBFmhfvUJGJiWeXcxiy9sGmeiGGc0Rht2ph3pR22ngmno6JdZvm4XGQruTZo4vHpPqVyP6TfKHlUZuO1Y6cib4ZIVh906FMM4G5BivbRoQUiRaIYlwmPvjjRmeKuyYA03lM2FC7WKyGY02IfdUtGUATwA'; // Replace with your Spotify access token
-async function fetchCurrentlyPlaying() {
-  try {
-    const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
+const clientId = 'f472cf64810b419e82483c50e1dd4587';
+    const redirectUri = 'https://flickerandframe.github.io/nzxt/';
+    const scopes = ['user-read-playback-state', 'user-read-currently-playing'];
+    
+    // Redirect to Spotify for login if no token is found
+    const hash = window.location.hash;
+    let accessToken = localStorage.getItem('spotifyAccessToken') || null;
+    if (!accessToken && hash) {
+      accessToken = hash.substring(1).split('&').find(el => el.startsWith('access_token')).split('=')[1];
+      localStorage.setItem('spotifyAccessToken', accessToken);
+      window.location.hash = '';
+    }
+
+    if (!accessToken) {
+      window.location.href = `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
+    } else {
+      fetchCurrentlyPlaying();
+      setInterval(fetchCurrentlyPlaying, 5000);
+    }
+
+    async function fetchCurrentlyPlaying() {
+      try {
+        const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        });
+
+        if (response.status === 204 || response.status === 401) {
+          localStorage.removeItem('spotifyAccessToken');
+          window.location.reload();
+          return;
+        }
+        
+        const data = await response.json();
+        updateDisplay(data.item);
+      } catch (error) {
+        console.error('Error fetching currently playing song:', error);
       }
-    });
-
-    if (response.status === 204) {
-      // No song is currently playing
-      displayLastPlayed();
-      return;
     }
 
-    const data = await response.json();
-    if (data && data.item) {
-      const albumCoverUrl = data.item.album.images[0].url;
-      const songTitle = data.item.name;
-      const artistName = data.item.artists.map(artist => artist.name).join(', ');
-      const progress = data.progress_ms;
-      const duration = data.item.duration_ms;
+    function updateDisplay(track) {
+      const albumCover = document.getElementById('album-cover');
+      const songTitle = document.getElementById('song-title');
+      const artistName = document.getElementById('artist-name');
+      const content = document.getElementById('content');
+      const display = document.getElementById('display');
 
-      updateSongInfo(albumCoverUrl, songTitle, artistName);
-      updateProgress(progress, duration);
+      content.classList.add('fade');
+      setTimeout(() => {
+        albumCover.src = track.album.images[0].url;
+        songTitle.textContent = track.name;
+        artistName.textContent = track.artists.map(artist => artist.name).join(', ');
+        display.style.backgroundImage = `url(${track.album.images[0].url})`;
+
+        content.classList.remove('fade');
+      }, 500);
     }
-  } catch (error) {
-    console.error('Error fetching data from Spotify', error);
-  }
-}
-
-function updateSongInfo(newCover, newTitle, newArtist) {
-  const content = document.getElementById('content');
-  const albumCover = document.getElementById('album-cover');
-  const songTitle = document.getElementById('song-title');
-  const artistName = document.getElementById('artist-name');
-
-  content.classList.remove('show');
-  content.classList.add('fade');
-
-  setTimeout(() => {
-    albumCover.src = newCover;
-    songTitle.textContent = newTitle;
-    artistName.textContent = newArtist;
-
-    content.classList.remove('fade');
-    content.classList.add('show');
-  }, 500);
-}
-
-function updateProgress(progress, duration) {
-  const progressCircle = document.querySelector('.progress-outline circle');
-  const circumference = 2 * Math.PI * 195;
-  const progressPercent = (progress / duration) * 100;
-  progressCircle.style.strokeDasharray = `${(circumference * progressPercent) / 100} ${circumference}`;
-}
-
-function displayLastPlayed() {
-  // Fetch and display the last played track from Spotify (optional)
-}
-
-// Update every 5 seconds
-setInterval(fetchCurrentlyPlaying, 100);
-fetchCurrentlyPlaying();
