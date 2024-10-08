@@ -41,11 +41,6 @@ body {
   background-position: center;
   z-index: 1;
   transition: opacity 0.3s ease;
-  opacity: 1;
-}
-
-.clock-bg {
-  background-color: #fff;
 }
 
 .progress-circle {
@@ -77,21 +72,24 @@ body {
 }
 
 #album-cover {
-  width: 300px;
-  height: 300px;
+  width: 280px;  /* Slightly larger for emphasis */
+  height: 280px;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Slightly reduced bottom margin */
 }
 
 #song-title {
   font-family: 'CustomBold', Arial, sans-serif;
-  padding: 0 30px; /* Prevents overflow */
+  font-size: 2rem;
+  padding: 0 20px; /* Adjusted to prevent overflow */
 }
 
 #artist-name {
   font-family: 'CustomRegular', Arial, sans-serif;
-  margin-top: -5px; /* Reduces bottom padding */
+  color: #ccc;
+  margin-top: -5px;
+  font-size: 1.2rem; /* Slightly smaller to emphasize title */
 }
 
 #current-time, #song-title {
