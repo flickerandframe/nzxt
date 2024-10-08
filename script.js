@@ -21,7 +21,7 @@ if (!accessToken) {
   redirectToSpotify();
 } else {
   fetchCurrentlyPlaying();
-  setInterval(fetchCurrentlyPlaying, 2000); // Frequent checks for better sync
+  setInterval(fetchCurrentlyPlaying, 100); // Frequent checks for better sync
 }
 
 async function fetchCurrentlyPlaying() {
