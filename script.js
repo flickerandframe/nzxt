@@ -19,7 +19,7 @@ if (!accessToken && hash) {
 
 if (accessToken) {
   fetchCurrentlyPlaying();
-  setInterval(fetchCurrentlyPlaying, 500);
+  setInterval(fetchCurrentlyPlaying, 2000);
   setInterval(updateTimeDisplay, 1000);
 }
 
@@ -31,7 +31,7 @@ async function fetchCurrentlyPlaying() {
 
     if (response.status === 204 || response.status === 401) {
       localStorage.removeItem('spotifyAccessToken');
-      return; // Wait until music starts again before reauthorizing
+      return;
     }
 
     const data = await response.json();
@@ -91,7 +91,6 @@ function updateTimeDisplay() {
   document.getElementById('current-time').textContent = time;
   document.getElementById('current-day').textContent = day;
 
-  // Use progress bar to represent seconds
   const secondsRatio = now.getSeconds() / 60;
   const offset = 1913 * (1 - secondsRatio);
   progressCircle.style.strokeDashoffset = offset;
@@ -102,7 +101,6 @@ function showTimeDisplay() {
   document.getElementById('song-title').classList.add('hidden');
   document.getElementById('artist-name').classList.add('hidden');
   document.getElementById('time-display').classList.remove('hidden');
-  document.getElementById('content').style.opacity = '1';
 }
 
 function showMusicInfo() {
@@ -110,5 +108,4 @@ function showMusicInfo() {
   document.getElementById('song-title').classList.remove('hidden');
   document.getElementById('artist-name').classList.remove('hidden');
   document.getElementById('time-display').classList.add('hidden');
-  document.getElementById('content').style.opacity = '1';
 }
