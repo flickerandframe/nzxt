@@ -3,35 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spotify Kraken Display</title>
+  <title>Spotify Listening Status</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Main Container for Circular Display -->
-  <div class="circular-display">
-    
-    <!-- Circular Progress Outline -->
-    <div class="progress-outline">
-      <svg width="100%" height="100%">
-        <!-- The 'r' attribute controls the radius of the circle -->
-        <circle cx="50%" cy="50%" r="195" stroke-linecap="round" />
-      </svg>
-    </div>
-
-    <!-- Content Section -->
+  <div class="circular-display" id="display">
+    <div class="blur-bg" id="blur-bg"></div>
+    <svg class="progress-circle" width="300" height="300">
+      <circle cx="150" cy="150" r="140"></circle>
+      <circle cx="150" cy="150" r="140" id="progress"></circle>
+    </svg>
     <div class="content" id="content">
-      <!-- Album Cover Image -->
-      <img id="album-cover" src="placeholder.jpg" alt="Album Cover" />
-
-      <!-- Song Information -->
-      <div id="song-info">
-        <h2 id="song-title">No song playing</h2>
-        <p id="artist-name">Artist Name</p>
-      </div>
+      <img id="album-cover" src="" alt="Album Cover">
+      <h2 id="song-title">Song Title</h2>
+      <p id="artist-name">Artist</p>
     </div>
   </div>
-
-  <!-- Link to the main JavaScript file -->
   <script src="script.js"></script>
 </body>
 </html>
