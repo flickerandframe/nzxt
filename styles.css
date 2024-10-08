@@ -16,7 +16,7 @@ body {
   height: 100vh;
   background-color: #000;
   color: #fff;
-  font-family: 'CustomRegular', Arial, sans-serif;
+  font-family: 'CustomRegular';
 }
 
 .circular-display {
@@ -71,7 +71,7 @@ body {
   text-align: center;
   z-index: 3;
   transition: opacity 0.3s ease;
-  font-family: 'CustomBold', Arial, sans-serif;
+  font-family: 'CustomBold';
 }
 
 #album-cover {
@@ -87,7 +87,7 @@ body {
 }
 
 #time-display h2, #time-display p {
-  font-family: 'CustomBold', Arial, sans-serif;
+  font-family: 'CustomBold';
   margin: 0;
 }
 
