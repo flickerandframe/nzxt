@@ -84,15 +84,16 @@ function updateProgressBar(progress, duration) {
   const progressRatio = progress / duration;
   const offset = 1288 * (1 - progressRatio);
   progressCircle.style.strokeDashoffset = offset;
-
-  // Update the time display with seconds
-  const totalSeconds = Math.floor(duration / 1000);
-  const playedSeconds = Math.floor(progress / 1000);
-  const percentage = (playedSeconds / totalSeconds) * 100;
-  progressCircle.style.strokeDashoffset = offset * (percentage / 100);
 }
 
-// Other parts of the code remain unchanged
+function updateTimeDisplay() {
+  const now = new Date();
+  const time = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  const day = now.toLocaleDateString([], { weekday: 'long' });
+
+  document.getElementById('current-time').textContent = time;
+  document.getElementById('current-day').textContent = day;
+}
 
 function showTimeDisplay() {
   document.getElementById('album-cover').classList.add('hidden');
@@ -107,4 +108,3 @@ function showMusicInfo() {
   document.getElementById('artist-name').classList.remove('hidden');
   document.getElementById('time-display').classList.add('hidden');
 }
-
