@@ -19,7 +19,7 @@ if (!accessToken && hash) {
 
 if (accessToken) {
   fetchCurrentlyPlaying();
-  setInterval(fetchCurrentlyPlaying, 2000);
+  setInterval(fetchCurrentlyPlaying, 100);
   setInterval(updateTimeDisplay, 1000);
 }
 
@@ -102,6 +102,7 @@ function showTimeDisplay() {
   document.getElementById('song-title').classList.add('hidden');
   document.getElementById('artist-name').classList.add('hidden');
   document.getElementById('time-display').classList.remove('hidden');
+  document.getElementById('content').style.opacity = '1';
 }
 
 function showMusicInfo() {
@@ -109,4 +110,5 @@ function showMusicInfo() {
   document.getElementById('song-title').classList.remove('hidden');
   document.getElementById('artist-name').classList.remove('hidden');
   document.getElementById('time-display').classList.add('hidden');
+  document.getElementById('content').style.opacity = '1';
 }
