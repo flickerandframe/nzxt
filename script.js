@@ -19,7 +19,7 @@ if (!accessToken && hash) {
 
 if (accessToken) {
   fetchCurrentlyPlaying();
-  setInterval(fetchCurrentlyPlaying, 100);
+  setInterval(fetchCurrentlyPlaying, 500);
   setInterval(updateTimeDisplay, 1000);
 }
 
