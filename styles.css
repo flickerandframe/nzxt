@@ -21,8 +21,8 @@ body {
 
 .circular-display {
   position: relative;
-  width: 440px;
-  height: 440px;
+  width: 640px;
+  height: 640px;
   border-radius: 50%;
   overflow: hidden;
   display: flex;
