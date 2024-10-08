@@ -30,6 +30,8 @@ body {
   background-size: cover;
   background-position: center;
   z-index: 1;
+  transition: opacity 0.3s ease; /* Same fade effect as the content */
+  opacity: 1;
 }
 
 .progress-circle {
@@ -42,7 +44,7 @@ body {
 
 .progress-circle circle {
   fill: none;
-  stroke-width: 3;
+  stroke-width: 5; /* Thicker progress bar */
   opacity: 0.3;
 }
 
