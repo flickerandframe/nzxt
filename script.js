@@ -5,6 +5,7 @@ const hash = window.location.hash;
 let accessToken = localStorage.getItem('spotifyAccessToken') || null;
 const progressCircle = document.getElementById('progress');
 const blurBg = document.getElementById('blur-bg');
+const content = document.getElementById('content');
 let currentTrackId = null;
 
 function redirectToSpotify() {
@@ -22,6 +23,9 @@ if (accessToken) {
   fetchCurrentlyPlaying();
   setInterval(fetchCurrentlyPlaying, 2000);
   setInterval(updateTimeDisplay, 1000);
+} else {
+  console.log("No access token found; redirecting for authorization.");
+  redirectToSpotify();
 }
 
 async function fetchCurrentlyPlaying() {
@@ -31,12 +35,15 @@ async function fetchCurrentlyPlaying() {
     });
 
     if (response.status === 204 || response.status === 401) {
+      console.log("No music is playing or token expired.");
       localStorage.removeItem('spotifyAccessToken');
+      showTimeDisplay();
       return;
     }
 
     const data = await response.json();
     if (data && data.is_playing) {
+      console.log("Music is playing:", data.item.name);
       showMusicInfo();
       const trackId = data.item.id;
       if (trackId !== currentTrackId) {
@@ -46,10 +53,12 @@ async function fetchCurrentlyPlaying() {
         updateProgressBar(data.progress_ms, data.item.duration_ms);
       }
     } else {
+      console.log("Music is paused or no song data returned.");
       showTimeDisplay();
     }
   } catch (error) {
     console.error('Error fetching currently playing song:', error);
+    showTimeDisplay(); // Show clock in case of error
   }
 }
 
@@ -58,6 +67,7 @@ function updateDisplay(track, progress, duration) {
   const songTitle = document.getElementById('song-title');
   const artistName = document.getElementById('artist-name');
 
+  console.log("Updating display for song:", track.name);
   albumCover.src = track.album.images[0].url;
   songTitle.textContent = track.name;
   artistName.textContent = track.artists.map(artist => artist.name).join(', ');
@@ -71,6 +81,7 @@ function updateProgressBar(progress, duration) {
   const progressRatio = progress / duration;
   const offset = 1913 * (1 - progressRatio);
   progressCircle.style.strokeDashoffset = offset;
+  console.log("Progress bar updated:", progressRatio);
 }
 
 function updateTimeDisplay() {
@@ -87,16 +98,20 @@ function updateTimeDisplay() {
 }
 
 function showTimeDisplay() {
+  console.log("Displaying clock.");
   blurBg.classList.add('clock-bg');
+  content.classList.remove('hidden');
   document.getElementById('album-cover').classList.add('hidden');
   document.getElementById('song-title').classList.add('hidden');
   document.getElementById('artist-name').classList.add('hidden');
   document.getElementById('time-display').classList.remove('hidden');
-  blurBg.style.backgroundImage = '';  // Clear the album cover background
+  blurBg.style.backgroundImage = '';
 }
 
 function showMusicInfo() {
+  console.log("Displaying music info.");
   blurBg.classList.remove('clock-bg');
+  content.classList.remove('hidden');
   document.getElementById('album-cover').classList.remove('hidden');
   document.getElementById('song-title').classList.remove('hidden');
   document.getElementById('artist-name').classList.remove('hidden');
