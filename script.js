@@ -37,7 +37,7 @@ async function fetchCurrentlyPlaying() {
     if (response.status === 204 || response.status === 401) {
       console.log("No music is playing or token expired.");
       localStorage.removeItem('spotifyAccessToken');
-      showTimeDisplay();
+      showTimeDisplay();  // Show clock when no song is playing
       return;
     }
 
@@ -50,11 +50,11 @@ async function fetchCurrentlyPlaying() {
         currentTrackId = trackId;
         updateDisplay(data.item, data.progress_ms, data.item.duration_ms);
       } else {
-        updateProgressBar(data.progress_ms, data.item.duration_ms);
+        updateProgressBar(data.progress_ms, data.item.duration_ms);  // Update progress for the current song
       }
     } else {
       console.log("Music is paused or no song data returned.");
-      showTimeDisplay();
+      showTimeDisplay();  // Show clock when song is paused
     }
   } catch (error) {
     console.error('Error fetching currently playing song:', error);
@@ -74,7 +74,7 @@ function updateDisplay(track, progress, duration) {
   blurBg.style.backgroundImage = `url(${track.album.images[0].url})`;
   blurBg.classList.remove('clock-bg');
 
-  updateProgressBar(progress, duration);
+  updateProgressBar(progress, duration); // Update progress bar for song
 }
 
 function updateProgressBar(progress, duration) {
@@ -91,10 +91,6 @@ function updateTimeDisplay() {
 
   document.getElementById('current-time').textContent = time;
   document.getElementById('current-day').textContent = day;
-
-  const secondsRatio = now.getSeconds() / 60;
-  const offset = 1913 * (1 - secondsRatio);
-  progressCircle.style.strokeDashoffset = offset;
 }
 
 function showTimeDisplay() {
@@ -105,7 +101,8 @@ function showTimeDisplay() {
   document.getElementById('song-title').classList.add('hidden');
   document.getElementById('artist-name').classList.add('hidden');
   document.getElementById('time-display').classList.remove('hidden');
-  blurBg.style.backgroundImage = '';
+  progressCircle.style.strokeDashoffset = 1913;  // Hide progress bar when displaying clock
+  blurBg.style.backgroundImage = '';  // Clear album cover background
 }
 
 function showMusicInfo() {
