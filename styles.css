@@ -60,7 +60,7 @@ body {
 
 #progress {
   stroke: white;
-  stroke-dasharray: 1913; /* Full circle for r=305 */
+  stroke-dasharray: 1913;
   stroke-dashoffset: 1913;
   stroke-linecap: round;
   transition: stroke-dashoffset 0.1s linear;
@@ -77,28 +77,26 @@ body {
   height: 300px;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 #song-title {
   font-family: 'CustomBold', Arial, sans-serif;
-  padding: 0 30px; /* Prevents overflow */
+  padding: 0 20px;
 }
 
 #artist-name {
   font-family: 'CustomRegular', Arial, sans-serif;
-  margin-top: -5px; /* Reduces bottom padding */
+  margin-top: -5px;
 }
 
 #current-time, #song-title {
   font-family: 'CustomBold', Arial, sans-serif;
-  margin: 0;
 }
 
 #current-day, #artist-name {
   font-family: 'CustomRegular', Arial, sans-serif;
   color: #ccc;
-  margin-top: 5px;
 }
 
 .hidden {
