@@ -21,7 +21,7 @@ if (!accessToken) {
   redirectToSpotify();
 } else {
   fetchCurrentlyPlaying();
-  setInterval(fetchCurrentlyPlaying, 2000); // Regularly check for updates
+  setInterval(fetchCurrentlyPlaying, 500); // Regularly check for updates
   setInterval(updateTimeDisplay, 1000); // Update time every second
 }
 
