@@ -17,12 +17,10 @@ if (!accessToken && hash) {
   window.location.hash = '';
 }
 
-if (!accessToken) {
-  redirectToSpotify();
-} else {
+if (accessToken) {
   fetchCurrentlyPlaying();
-  setInterval(fetchCurrentlyPlaying, 100); // Regularly check for updates
-  setInterval(updateTimeDisplay, 1000); // Update time every second
+  setInterval(fetchCurrentlyPlaying, 2000);
+  setInterval(updateTimeDisplay, 100);
 }
 
 async function fetchCurrentlyPlaying() {
@@ -33,8 +31,7 @@ async function fetchCurrentlyPlaying() {
 
     if (response.status === 204 || response.status === 401) {
       localStorage.removeItem('spotifyAccessToken');
-      redirectToSpotify();
-      return;
+      return; // Wait until music starts again before reauthorizing
     }
 
     const data = await response.json();
@@ -57,54 +54,4 @@ async function fetchCurrentlyPlaying() {
 
 function updateDisplay(track, progress, duration, fadeIn) {
   const albumCover = document.getElementById('album-cover');
-  const songTitle = document.getElementById('song-title');
-  const artistName = document.getElementById('artist-name');
-  const blurBg = document.getElementById('blur-bg');
-  const content = document.getElementById('content');
-
-  if (fadeIn) {
-    content.style.opacity = '0';
-    blurBg.style.opacity = '0';
-
-    setTimeout(() => {
-      albumCover.src = track.album.images[0].url;
-      songTitle.textContent = track.name;
-      artistName.textContent = track.artists.map(artist => artist.name).join(', ');
-      blurBg.style.backgroundImage = `url(${track.album.images[0].url})`;
-
-      content.style.opacity = '1';
-      blurBg.style.opacity = '1';
-    }, 300);
-  }
-
-  updateProgressBar(progress, duration);
-}
-
-function updateProgressBar(progress, duration) {
-  const progressRatio = progress / duration;
-  const offset = 1288 * (1 - progressRatio);
-  progressCircle.style.strokeDashoffset = offset;
-}
-
-function updateTimeDisplay() {
-  const now = new Date();
-  const time = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-  const day = now.toLocaleDateString([], { weekday: 'long' });
-
-  document.getElementById('current-time').textContent = time;
-  document.getElementById('current-day').textContent = day;
-}
-
-function showTimeDisplay() {
-  document.getElementById('album-cover').classList.add('hidden');
-  document.getElementById('song-title').classList.add('hidden');
-  document.getElementById('artist-name').classList.add('hidden');
-  document.getElementById('time-display').classList.remove('hidden');
-}
-
-function showMusicInfo() {
-  document.getElementById('album-cover').classList.remove('hidden');
-  document.getElementById('song-title').classList.remove('hidden');
-  document.getElementById('artist-name').classList.remove('hidden');
-  document.getElementById('time-display').classList.add('hidden');
-}
+  const songTitle = document.getElementById
