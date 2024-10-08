@@ -42,7 +42,7 @@ body {
   background-position: center;
   z-index: 1;
   transition: opacity 0.3s ease;
-  opacity: 1;
+  opacity: 0.6;
 }
 
 .progress-circle {
@@ -93,9 +93,11 @@ body {
 
 #current-time {
   font-size: 2.5rem;
+  font-family: 'CustomBold';
 }
 
 #current-day {
   font-size: 1.2rem;
   color: #ccc;
+  font-family: 'CustomRegular';
 }
