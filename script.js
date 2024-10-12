@@ -1,5 +1,5 @@
 const client_id = 'f472cf64810b419e82483c50e1dd4587'; // Your Spotify Client ID
-const redirect_uri = 'http://127.0.0.1:3000/c:/Users/isaac/Downloads/j/index.html'; // Your redirect URI (should match your app settings)
+const redirect_uri = 'https://flickerandframe.github.io/nzxt/'; // Your redirect URI (should match your app settings)
 const scope = 'user-read-currently-playing user-read-playback-state';
 const authEndpoint = 'https://accounts.spotify.com/authorize';
 
