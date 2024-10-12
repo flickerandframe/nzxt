@@ -1,104 +1,185 @@
 @font-face {
-  font-family: 'CustomRegular';
-  src: url('reg.otf') format('opentype');
+  font-family: 'MyBoldFont'; /* Name for the bold font */
+  src: url('bold.otf') format('opentype'); /* Path to your bold font */
+  font-weight: bold; /* Define the font weight */
+  font-style: normal; /* Define the font style */
 }
 
 @font-face {
-  font-family: 'CustomBold';
-  src: url('bold.otf') format('opentype');
+  font-family: 'MyRegFont'; /* Name for the regular font */
+  src: url('reg.otf') format('opentype'); /* Path to your regular font */
+  font-weight: normal; /* Define the font weight */
+  font-style: normal; /* Define the font style */
 }
 
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #000;
-  font-family: 'CustomRegular', Arial, sans-serif;
-  color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #000000;
 }
 
-.circular-display {
-  position: relative;
-  width: 640px;
-  height: 640px;
+/* Circular background with shadow */
+.circle {
+  width: 670px; /* Reduced from 700px to 670px */
+  height: 670px; /* Reduced from 700px to 670px */
   border-radius: 50%;
+  background-image: url('https://wallpaperaccess.com/full/1556608.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Shadow around the circle */
 }
 
-.blur-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  filter: blur(30px);
+.circle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: inherit;
+    background-size: inherit;
+    background-position: inherit;
+    filter: blur(10px); /* Apply blur to the background */
+    z-index: 0;
+}
+
+.circle::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay on top of blurred background */
+    z-index: 0; /* Keep behind the content */
+}
+
+/* Content inside the circle */
+.content {
+  position: relative;
+  z-index: 1; /* Keep content above the background */
+  text-align: center;
+  display: flex; /* Use flexbox to align items */
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center items horizontally */
+  padding-top: 30px; /* Add padding to create space above the album cover */
+  transition: transform 0.5s; /* Smooth transition for shifting */
+}
+
+/* Content shift down animation */
+.content.shifted {
+  transform: translateY(45px); /* Shift down by 30px */
+}
+
+/* Content shift up animation */
+.content:not(.shifted) {
+  transform: translateY(0); /* Reset to original position */
+}
+
+/* Style for the time display */
+.time-display {
+  display: flex; /* Use flexbox to align time and AM/PM */
+  align-items: baseline; /* Align items along the baseline */
+  font-family: 'MyBoldFont'; /* Use the bold font */
+  font-size: 60px; /* Larger size for time display */
+  color: rgba(255, 255, 255, 0.9); /* Bright white for visibility */
+  position: absolute; /* Position it absolutely */
+  top: -22px; /* Adjust top position as needed */
+  left: 50%; /* Center it horizontally */
+  transform: translateX(-50%); /* Center using transform */
+  white-space: nowrap; /* Prevent wrapping */
+  opacity: 0; /* Start hidden */
+  transition: opacity 0.5s ease; /* Smooth transition for opacity */
+}
+
+/* Dimmed effect for the circle when the song is paused */
+.circle.dimmed {
+  filter: brightness(0.6); /* Dim the circle */
+  transition: filter 0.5s ease; /* Smooth transition for dimming */
+}
+
+.text-labels {
+  max-width: 357px; /* Set a max-width for the text labels */
+}
+
+.text-labels h1, .text-labels h2 {
+  margin: 5px 0;
+  text-align: center; /* Center text */
+  width: 100%; /* Ensure text labels take full width */
+  overflow-wrap: break-word; /* Break long words */
+}
+
+.square-image {
+  width: 300px; /* Fixed size for the image */
+  height: 300px;
+  background-image: url('https://wallpaperaccess.com/full/1556608.jpg');
   background-size: cover;
   background-position: center;
-  z-index: 1;
-  transition: opacity 0.3s ease;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 0px 16px rgba(0, 0, 0, 0.4); /* Drop shadow on the square image */
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.square-image.fade {
+  opacity: 0;
+}
+
+.square-image.show {
   opacity: 1;
 }
 
-.progress-circle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  transform: rotate(-90deg);
+/* Text labels with different styles */
+.text-labels h1 {
+    margin: 5px 0;
+    font-family: 'MyBoldFont'; /* Use the bold font */
+    font-size: 28px;
+    color: rgba(255, 255, 255, 0.9); /* Whiter top text */
+    font-weight: bold; /* Ensure the weight is bold */
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.5); /* Drop shadow for top text */
+    opacity: 0; /* Start hidden */
+    transition: opacity 0.5s ease; /* Smooth transition for opacity */
 }
 
-.progress-circle circle {
-  fill: none;
-  stroke-width: 5;
-  opacity: 0.3;
+.text-labels h2 {
+    margin: 5px 0;
+    font-family: 'MyRegFont'; /* Use the regular font */
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.7); /* Dimmer bottom text */
+    font-weight: normal; /* Ensure the weight is normal */
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.5); /* Drop shadow for bottom text */
+    opacity: 0; /* Start hidden */
+    transition: opacity 0.5s ease; /* Smooth transition for opacity */
 }
 
-#progress {
-  stroke: white;
-  stroke-dasharray: 1913;
-  stroke-dashoffset: 1913;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.1s linear;
+.date {
+  margin: 10px 0;
+  font-family: 'MyRegFont'; /* Use the bold font */
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.9); /* Whiter top text */
+  font-weight: bold; /* Ensure the weight is bold */
+  opacity: 0; /* Start hidden */
+  transition: opacity 0.5s ease; /* Smooth transition for opacity */
 }
 
-.content {
-  text-align: center;
-  z-index: 3;
-  transition: opacity 0.3s ease;
+/* Style for the hollow SVG circle */
+.hollow-circle {
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Offset by half its width and height to truly center it */
+    z-index: 1; /* Place above the blurred background */
 }
 
-#album-cover {
-  width: 300px;
-  height: 300px;
-  border-radius: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  margin-bottom: 15px;
-}
-
-#song-title {
-  font-family: 'CustomBold', Arial, sans-serif;
-  padding: 0 20px;
-}
-
-#artist-name {
-  font-family: 'CustomRegular', Arial, sans-serif;
-  margin-top: -5px;
-}
-
-#current-time, #song-title {
-  font-family: 'CustomBold', Arial, sans-serif;
-}
-
-#current-day, #artist-name {
-  font-family: 'CustomRegular', Arial, sans-serif;
-  color: #ccc;
-}
-
-.hidden {
-  display: none;
+#animatedCircle {
+  transition: stroke-dashoffset 0.3s ease-in-out; /* Smooth transition of 0.5 seconds */
 }

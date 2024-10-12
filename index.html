@@ -3,26 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spotify Listeningsus</title>
+  <title>Blurred Background with Sharp Content, Shadows, and Text Styling</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="circular-display" id="display">
-    <div class="blur-bg" id="blur-bg"></div>
-    <svg class="progress-circle" width="640" height="640">
-      <circle cx="320" cy="320" r="305"></circle>
-      <circle cx="320" cy="320" r="305" id="progress"></circle>
+  <div class="circle" id="blurred">
+    <svg class="hollow-circle" width="660" height="660" viewBox="0 0 660 660">
+      <circle 
+        cx="330" cy="330" r="300" 
+        fill="none" 
+        stroke="white" 
+        stroke-opacity="0.7"
+        stroke-width="10"
+        stroke-linecap="round" 
+        stroke-dasharray="1884" 
+        stroke-dashoffset="1884"
+        id="animatedCircle"
+        transform="rotate(-90 330 330)" 
+      />
     </svg>
+      
     <div class="content" id="content">
-      <img id="album-cover" src="" alt="Album Cover">
-      <h2 id="song-title"></h2>
-      <p id="artist-name"></p>
-      <div id="time-display" class="hidden">
-        <h2 id="current-time"></h2>
-        <p id="current-day"></p>
+      <div class="time-display" id="timeDisplay">
+        <span id="currentTime"></span>
+        <span id="amPm"></span>
+      </div>
+      <h1 class="date" id="date"></h1>
+      <div class="square-image" id="imageElement"></div>
+      <div class="text-labels">
+        <h1 id="title"></h1>
+        <h2 id="artist"></h2>
       </div>
     </div>
   </div>
+  
+  
   <script src="script.js"></script>
 </body>
 </html>
